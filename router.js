@@ -1,3 +1,4 @@
+const homeController = require("./controllers/homeController")
 const creatorController = require("./controllers/creatorController")
 const postController = require("./controllers/postController")
 const express = require('express');
@@ -9,6 +10,8 @@ router.get('/test', (req, res, next) => {
 
     });
 })
+
+router.get("/", homeController.showHome);
 
 router.post("/creator/create", creatorController.createCreatorPage);
 router.get("/creator/:creatorName", creatorController.creatorPage);
