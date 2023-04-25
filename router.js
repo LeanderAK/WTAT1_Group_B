@@ -11,6 +11,11 @@ router.get('/test', (req, res, next) => {
     });
 })
 
+/*
+All accessible routes. The function call from the specified controller renders the view.
+The ':' indicates the use of a parameter within the path.
+*/
+
 router.get("/", homeController.showHome);
 
 router.post("/creator/create", creatorController.createCreatorPage);
