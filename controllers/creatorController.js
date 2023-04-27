@@ -1,6 +1,6 @@
 exports.creatorPage = (req, res) => {
     let creatorName = req.params.creatorName;
-    res.send(`This is the profile page of creator ${creatorName}`);
+    res.render("creator", {name: creatorName});
 };
 exports.createCreatorPage = (req, res) => {
     res.send(`This is the page to create a new creator!`);
