@@ -1,9 +1,26 @@
+const Post = require("../models/post")
+
 exports.postPage = (req, res) => {
     let postId = req.params.postId;
-    res.render("post.ejs", {postId: postId});
-};
+    Post.findById(postId).then(post => {
+        res.render("post.ejs", { post: post });
+    }).catch(error => {
+        if (error) res.render("error.ejs");;
+    });
+}
 exports.createPostPage = (req, res) => {
-    res.send(`This is the page to create a new post!`);
+    res.render("create_post.ejs");
+};
+exports.savePost = (req, res) => {
+    console.log(req.body)
+    Post.create(
+    {
+        img: req.body.img,
+        title: req.body.title,
+        description: req.body.description
+    }).then(post => {
+        res.redirect(`/post/${post._id}`);    
+    });
 };
 exports.editPostPage = (req, res) => {
     let postId = req.params.postId;

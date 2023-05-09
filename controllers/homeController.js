@@ -1,4 +1,4 @@
-const posts = [
+const dummy_posts = [
     {
         id: 1,
         img: "https://images.coplusk.net/project_images/181479/image/105830_2F2014-11-26-161011-20141126_124438%2B_281_29.jpg",
@@ -24,6 +24,10 @@ const posts = [
         description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, ...",
     }
 ];
-exports.showHome = (req, res) => {
-    res.render("home.ejs", {posts: posts});
+const Post = require("../models/post")
+exports.showHome = (req, res, next) => {
+    Post.find({}).then(posts => {
+        console.log(posts)
+        res.render("home.ejs", {posts: posts});
+    })
 };

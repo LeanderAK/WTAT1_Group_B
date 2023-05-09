@@ -3,13 +3,16 @@
 <div class="content">
     <div class="grid">
         <% posts.forEach(post => { %>
-            <div class="card">
-                <img class="image" src=<%= post.img %> alt="card-image"/>
-                <div id="cardContent">
-                    <h2><%= post.title %></h2>
-                    <p><%= post.description %></p>
+            <a href="/post/<%= post.id %>">
+                <div class="card">  
+                    <img class="image" src=<%= post.img %> alt="card-image"/>
+                    <div id="cardContent">
+                        <h2><%= post.title %></h2>
+                        <p><%= post.description %></p>
+                        <small> <%= post.id %> </small>
+                    </div>
                 </div>
-            </div>
+            </a>
         <% }) %>
     </div>
 </div>
