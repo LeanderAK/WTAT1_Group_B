@@ -1,13 +1,32 @@
 html {
-    margin: 0
+    margin: 0;
+    font-family: "Avenir Next", serif;
 }
 
 body {
     background-color: #FDFCED;
     margin: 0;
-    padding-top: 70px;
+    padding-top: 90px;
 }
+
 #content {
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        padding-top: 145px;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    body {
+        padding-top: 125px;
+    }
+
+    #content {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
