@@ -7,8 +7,12 @@
     --card_large: 45;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 .grid {
-    padding-top: 20px;
     padding-bottom: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fill, var(--card_width));
@@ -26,9 +30,14 @@
 }
 
 .card {
+    transition: transform .1s;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover {
+    transform: scale(1.01);
 }
 
 #cardContent {
