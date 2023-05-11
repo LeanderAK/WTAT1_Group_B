@@ -1,5 +1,6 @@
 html {
-    margin: 0
+    margin: 0;
+    font-family: "Avenir Next", serif;
 }
 
 body {
@@ -7,6 +8,7 @@ body {
     margin: 0;
     padding-top: 90px;
 }
+
 #content {
     padding-left: 30px;
     padding-right: 30px;
