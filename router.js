@@ -2,6 +2,7 @@ const homeController = require("./controllers/homeController")
 const creatorController = require("./controllers/creatorController")
 const postController = require("./controllers/postController")
 const loginController = require("./controllers/loginController")
+const registerController = require("./controllers/registerController")
 const express = require('express');
 const router = express.Router();
 
@@ -20,6 +21,7 @@ The ':' indicates the use of a parameter within the path.
 router.get("/", homeController.showHome);
 
 router.get("/login", loginController.loginPage);
+router.get("/register", registerController.registerPage);
 
 router.post("/creator/create", creatorController.createCreatorPage);
 router.get("/creator/:creatorName", creatorController.creatorPage);
