@@ -7,7 +7,7 @@ a {
     margin: auto;
     width: 100%;
     padding-bottom: 20px;
-    columns: 330px;
+    columns: 300px;
     column-gap: 20px;
 }
 
@@ -98,13 +98,13 @@ a {
 }
 
 @media screen and (max-width: 1200px) {
-    .grid {
-        columns: 270px;
+    .masonryGrid {
+        columns: 280px;
     }
 }
 
 @media screen and (max-width: 1000px) {
-    .grid {
+    .masonryGrid {
         columns: 230px;
     }
 
@@ -116,7 +116,7 @@ a {
 /* mobile breakpoints */
 
 @media screen and (max-width: 540px) {
-    .grid {
+    .masonryGrid {
         columns: 200px;
         column-gap: 10px;
     }
@@ -127,7 +127,7 @@ a {
 }
 
 @media screen and (max-width: 400px) {
-    .grid {
+    .masonryGrid {
         columns: 130px;
         column-gap: 10px;
     }
@@ -156,7 +156,7 @@ a {
 }
 
 @media screen and (max-width: 370px) {
-    .grid {
+    .masonryGrid {
         columns: 300px;
         column-gap: 10px;
     }

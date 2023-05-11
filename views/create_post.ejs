@@ -1,9 +1,21 @@
-<link rel="stylesheet" href="/css/post.css">
-<body>
-    <form action="/post/create" method="post">
-    <input type="text" name="title" placeholder="TITLE" required>
-    <input type="text" name="description" placeholder="DESCRIPTION" required>
-    <input type="text" name="img" placeholder="IMAGE LINK" required>
-   <input type="submit" name="submit">
+<link rel="stylesheet" href="/css/createPost.css">
+<div class="formContainer">
+    <h1>Erstelle ein neues DIY</h1>
+    <form id="createPostForm" action="/post/create" method="post">
+        <div class="inputGroup">
+            <label for="title">Titel</label>
+            <input id="title" class="textInput" type="text" name="title" placeholder="Titel..." required>
+        </div>
+        <div class="inputGroup">
+            <label for="img">Bild</label>
+            <input id="img" class="textInput" type="text" name="img" placeholder="https://bildaddresse" required>
+        </div>
+        <div class="inputGroup">
+            <label for="description">Kurze Beschreibung</label>
+            <textarea id="description" class="textInput" name="description" maxlength="250" placeholder="Eine kurze Beschreibung..." required></textarea>
+        </div>
+        <div>
+            <input id="submit" type="submit" name="submit" value="Hochladen">
+        </div>
    </form>
-</body>
+</div>
