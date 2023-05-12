@@ -2,10 +2,12 @@ const Post = require("../models/post")
 
 exports.postPage = (req, res) => {
     let postId = req.params.postId;
-    Post.findById(postId).then(post => {
+    Post.findById(postId).exec()
+    .then(post => {
         res.render("post.ejs", { post: post });
     }).catch(error => {
-        if (error) res.render("error.ejs");;
+        console.log(error.message);
+        res.render("error.ejs");;
     });
 }
 exports.createPostPage = (req, res) => {
@@ -18,7 +20,9 @@ exports.savePost = (req, res) => {
         img: req.body.img,
         title: req.body.title,
         description: req.body.description
-    }).then(post => {
+    })
+    .then(post => {
+        console.log("rendering with postid" + post._id)
         res.redirect(`/post/${post._id}`);    
     });
 };

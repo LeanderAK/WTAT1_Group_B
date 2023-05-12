@@ -25,9 +25,13 @@ const dummy_posts = [
     }
 ];
 const Post = require("../models/post")
-exports.showHome = (req, res, next) => {
-    Post.find({}).then(posts => {
-        console.log(posts)
+exports.showHome = (req, res) => {
+    Post.find({}).exec()
+    .then((posts) => {
         res.render("home.ejs", {posts: posts});
+    })
+    .catch((error) => {
+        console.log(error.message);
+        res.render("error.ejs");;
     })
 };
