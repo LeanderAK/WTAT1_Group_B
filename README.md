@@ -13,3 +13,9 @@ MongoDB creates a default data directy. If you wish tu use a different directory
 mongod --dbpath <PATH>
 ```
 PATH EXAMPLE: /Users/leander/Desktop/Agile-Web/db
+
+Run dummyData file by entering 
+```
+node dummyData.js
+```
+in terminal in each subsequent lesson to avoid having an empty or inconsistent database.
