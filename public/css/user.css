@@ -1,0 +1,26 @@
+#userContainer {
+    background-color: white;
+    padding: 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.15);
+    max-width: 1000px;
+    margin: auto auto 30px;
+}
+
+.userButtons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#deleteButton {
+    padding: 5px;
+    border-radius: 50px;
+    width: 25px;
+    height: 25px;
+    color: red;
+}
+
+#deleteButton:hover {
+    background-color: rgba(136, 136, 136, 0.15);
+}

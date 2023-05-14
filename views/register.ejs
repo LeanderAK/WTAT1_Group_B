@@ -1,22 +1,29 @@
 <link rel="stylesheet" href="/css/login.css">
 <body>
-    <form action="/post/create" method="post">
+    <form id="registerForm" action="/user/create" method="post">
         <div class="imgcontainer">
             <img class="logo" src="/images/Logo.svg" alt="Creape Logo">
           </div>
-        
           <div class="container">
-            <label for="email"><b>Email</b></label>
+            <label for="username"><b>Username</b>
+            <input type="text" placeholder="Enter Username" name="username" required>
+            </label>
+
+            <label for="email"><b>Email</b>
             <input type="text" placeholder="Enter Email" name="email" required>
+            </label>
 
-            <label for="email"><b>Repeat Email</b></label>
-            <input type="text" placeholder="Enter Email again" name="email" required>
+            <label for="email"><b>Repeat Email</b>
+            <input type="text" placeholder="Enter Email again" name="emailRepeat" required>
+            </label>
         
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="password"><b>Password</b>
+            <input type="password" placeholder="Enter Password" name="password" required>
+            </label>
 
-            <label for="psw"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="password"><b>Repeat Password</b>
+            <input type="password" placeholder="Enter Password" name="passwordRepeat" required>
+            </label>
         
             <button type="submit">Register</button>
             <label>
