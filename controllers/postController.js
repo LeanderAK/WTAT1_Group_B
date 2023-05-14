@@ -4,7 +4,11 @@ exports.postPage = (req, res) => {
     let postId = req.params.postId;
     Post.findById(postId).exec()
         .then(post => {
-            res.render("post.ejs", {post: post});
+            if(post !== null) {
+                res.render("post.ejs", {post: post});
+            }else{
+                res.render("error");
+            }
         }).catch(error => {
         console.log(error.message);
         res.render("error.ejs");
@@ -39,11 +43,11 @@ exports.deletePostPage = (req, res, next) => {
     let postId = req.params.postId;
     Post.findByIdAndDelete(postId)
         .then(() => {
-            res.redirect(`/`)
+            res.redirect(`/`);
+            console.log("deleted Post: " + postId);
         })
         .catch(error => {
             console.log(`Error deleting post by ID: ${postId}\n${error.message}`);
             next();
         });
-    console.log("deleted Post: " + postId);
 };

@@ -1,5 +1,5 @@
 const homeController = require("./controllers/homeController")
-const creatorController = require("./controllers/creatorController")
+const userController = require("./controllers/userController")
 const postController = require("./controllers/postController")
 const loginController = require("./controllers/loginController")
 const registerController = require("./controllers/registerController")
@@ -27,10 +27,11 @@ router.get("/", homeController.showHome);
 router.get("/login", loginController.loginPage);
 router.get("/register", registerController.registerPage);
 
-router.post("/creator/create", creatorController.createCreatorPage);
-router.get("/creator/:creatorName", creatorController.creatorPage);
-router.patch('/creator/:creatorName', creatorController.editCreatorPage);
-router.delete('/creator/:creatorName', creatorController.deleteCreatorPage);
+router.post("/user/create", userController.createUser);
+router.get("/user/dummyuser", userController.dummyUserPage);
+router.get("/user/:userId", userController.userPage);
+router.patch('/user/:userId', userController.editUserPage);
+router.delete('/user/:userId', userController.deleteUser);
 
 router.get("/post/create", postController.createPostPage)
 router.post("/post/create", postController.savePost);
