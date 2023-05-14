@@ -9,7 +9,6 @@ const router = express.Router();
 router.get('/test', (req, res, next) => {
     return res.status(200).json({
         data : "Service is running! "
-
     });
 })
 
@@ -31,7 +30,7 @@ router.delete('/creator/:creatorName', creatorController.deleteCreatorPage);
 router.get("/post/create", postController.createPostPage)
 router.post("/post/create", postController.savePost);
 router.get("/post/:postId", postController.postPage);
-router.patch("/post/:postId", postController.editPostPage);
-router.delete("/post/:postId", postController.deletePostPage);
+router.patch("/post/:postId/edit", postController.editPostPage);
+router.get("/post/:postId/delete", postController.deletePostPage);
 
 module.exports = router;
