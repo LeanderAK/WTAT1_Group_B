@@ -1,21 +1,95 @@
 <link rel="stylesheet" href="/css/createPost.css">
+<body onload="addStep()">
 <div class="formContainer">
     <h1>Erstelle ein neues DIY</h1>
-    <form id="createPostForm" action="/post/create" method="post">
-        <div class="inputGroup">
-            <label for="title">Titel</label>
-            <input id="title" class="textInput" type="text" name="title" placeholder="Titel..." required>
+    <form id="createPostForm" name="createPostForm" action="/post/create" method="POST">
+        <div id="formGrid">
+            <div class="inputGroup">
+                <label for="title">Titel</label>
+                <input id="title" class="textInput" type="text" name="title" placeholder="Titel..." required>
+            </div>
+            <div class="inputGroup">
+                <label for="img">Bild</label>
+                <input id="img" class="textInput" type="text" name="img" placeholder="https://bildaddresse" required>
+            </div>
+            <div class="inputGroup">
+                <label for="description">Kurze Beschreibung</label>
+                <textarea id="description" class="textInput" name="description" maxlength="250"
+                          placeholder="Eine kurze Beschreibung..." required></textarea>
+            </div>
         </div>
-        <div class="inputGroup">
-            <label for="img">Bild</label>
-            <input id="img" class="textInput" type="text" name="img" placeholder="https://bildaddresse" required>
+        <h2 id="stepsHeader">Anleitungsschritte</h2>
+        <div id="stepsContainer"></div>
+        <div id="bottomButtonContainer">
+            <div id="addRemove">
+                <div onclick="addStep()">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+                        <g>
+                            <line x1="7" y1="0.54" x2="7" y2="13.54" fill="none" stroke="#000000" stroke-linecap="round"
+                                  stroke-linejoin="round"></line>
+                            <line x1="0.5" y1="7" x2="13.5" y2="7" fill="none" stroke="#000000" stroke-linecap="round"
+                                  stroke-linejoin="round"></line>
+                        </g>
+                    </svg>
+                </div>
+                <div onclick="removeStep()">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+                        <line x1="0.5" y1="7" x2="13.5" y2="7" fill="none" stroke="#000000" stroke-linecap="round"
+                              stroke-linejoin="round"></line>
+                    </svg>
+                </div>
+            </div>
+            <input id="submitButton" type="submit" value="Hochladen">
         </div>
-        <div class="inputGroup">
-            <label for="description">Kurze Beschreibung</label>
-            <textarea id="description" class="textInput" name="description" maxlength="250" placeholder="Eine kurze Beschreibung..." required></textarea>
-        </div>
-        <div>
-            <input id="submit" type="submit" name="submit" value="Hochladen">
-        </div>
-   </form>
+    </form>
 </div>
+</body>
+<script>
+    let count = 0;
+
+    function addStep() {
+        count += 1;
+
+        const label = document.createElement("label");
+        label.for = "step" + count;
+        label.innerHTML = "Schritt: " + count;
+
+        const textarea = document.createElement("textarea");
+        textarea.className = "textInput stepDescription";
+        textarea.id = "step" + count;
+        textarea.name = "step" + count;
+        textarea.placeholder = "Erklärung für Schritt " + count + ". ...";
+
+        const div = document.createElement("div");
+        div.id = count;
+        div.className = "inputGroup";
+        document.getElementById("stepsContainer");
+        div.appendChild(label);
+        div.appendChild(textarea);
+
+        const container = document.getElementById("stepsContainer");
+        container.appendChild(div);
+    }
+
+    function removeStep() {
+        if (count > 1) {
+            let step = document.getElementById(count);
+            step.remove();
+            count -= 1;
+        }
+    }
+
+    let createPostForm = document.getElementById("createPostForm");
+    createPostForm.addEventListener('formdata', (e) => {
+        const formData = e.formData;
+        let stepArray = [];
+        for (let i = 1; i <= count; i++) {
+            let input = document.getElementById("step" + i);
+            //delete data of input fields of each step
+            formData.delete("step" + i);
+            //rebuild step as JSON object
+            stepArray.push({number: i, description: input.value});
+        }
+        formData.append('steps', JSON.stringify(stepArray));
+    });
+</script>

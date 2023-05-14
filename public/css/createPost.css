@@ -1,6 +1,6 @@
 .formContainer {
     max-width: 800px;
-    margin: auto;
+    margin: auto auto 30px;
     padding: 15px;
     box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
@@ -8,6 +8,14 @@
 }
 
 #createPostForm {
+    margin-bottom: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+#formGrid {
     width: 100%;
     display: grid;
     grid-gap: 15px;
@@ -42,7 +50,55 @@
     outline: none;
 }
 
-#submit {
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.icon:hover {
+    background-color: #e0e0e0;
+}
+
+#stepsHeader {
+    grid-column: 1 / 3;
+}
+
+#addRemove {
+    height: fit-content;
+    display: flex;
+    gap: 5px;
+    justify-content: end;
+}
+
+#bottomButtonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+#addRemove div {
+    border: none;
+    background-color: white;
+    margin: 0;
+    padding: 8px;
+    border-radius: 20px;
+}
+
+#stepsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stepDescription {
+    height: 150px;
+}
+
+#addRemove div:hover {
+    background-color: #e0e0e0;
+}
+
+#submitButton {
     font-size: 16px;
     padding: 8px 15px 5px 15px;
     border-radius: 20px;
@@ -55,11 +111,15 @@
 }
 
 @media screen and (max-width: 800px) {
-    #createPostForm {
+    #formGrid {
         grid-template-columns: 1fr;
     }
 
     .inputGroup:nth-child(3) {
+        grid-column: 1 / 2;
+    }
+
+    #stepsHeader {
         grid-column: 1 / 2;
     }
 }

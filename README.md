@@ -14,6 +14,14 @@ mongod --dbpath <PATH>
 ```
 PATH EXAMPLE: /Users/leander/Desktop/Agile-Web/db
 
+Start Mongodb on Mac: 
+
+```
+sudo mongod --dbpath /System/Volumes/Data/data/db
+```
+
+[Icon-Set](https://www.streamlinehq.com/icons/streamline-mini-line)
+
 Run dummyData file by entering 
 ```
 node dummyData.js

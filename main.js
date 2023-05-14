@@ -3,7 +3,6 @@ const layouts = require("express-ejs-layouts")
 const port = 3000, express = require("express"), app = express();
 const path = require("path")
 const errorController = require("./controllers/errorController")
-const Post = require("./models/post")
 const bodyParser = require('body-parser');
 
 const mongoose = require("mongoose");
@@ -28,6 +27,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
+const methodOverride = require("method-override");
+router.use(methodOverride("_method", {
+
+}));
 
 app.listen(port, () => {
  console.log(`The Express.js server has started and is listening on port number: ${port}`);
