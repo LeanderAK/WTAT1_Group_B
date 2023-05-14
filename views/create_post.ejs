@@ -7,7 +7,7 @@
         <div id="formGrid">
             <div class="inputGroup">
                 <label for="title">Titel</label>
-                <input id="title" class="textInput" type="text" name="title" placeholder="Titel..." required>
+                <input id="title" class="textInput" type="text" name="title" maxlength="50" placeholder="Titel..." required>
             </div>
             <div class="inputGroup">
                 <label for="img">Bild</label>
@@ -45,3 +45,18 @@
     </form>
 </div>
 </body>
+<script>
+    let createPostForm = document.getElementById("createPostForm");
+    createPostForm.addEventListener('formdata', (e) => {
+        const formData = e.formData;
+        let stepArray = [];
+        for (let i = 1; i <= count; i++) {
+            let input = document.getElementById("step" + i);
+            //delete data of input fields of each step
+            formData.delete("step" + i);
+            //rebuild step as JSON object
+            stepArray.push({number: i, description: input.value});
+        }
+        formData.append('steps', JSON.stringify(stepArray));
+    });
+</script>

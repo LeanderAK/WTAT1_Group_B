@@ -31,17 +31,3 @@ function removeStep() {
         count -= 1;
     }
 }
-
-let createPostForm = document.getElementById("createPostForm");
-createPostForm.addEventListener('formdata', (e) => {
-    const formData = e.formData;
-    let stepArray = [];
-    for (let i = 1; i <= count; i++) {
-        let input = document.getElementById("step" + i);
-        //delete data of input fields of each step
-        formData.delete("step" + i);
-        //rebuild step as JSON object
-        stepArray.push({number: i, description: input.value});
-    }
-    formData.append('steps', JSON.stringify(stepArray));
-});
