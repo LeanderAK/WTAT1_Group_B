@@ -27,11 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-const methodOverride = require("method-override");
-router.use(methodOverride("_method", {
-
-}));
-
 app.listen(port, () => {
  console.log(`The Express.js server has started and is listening on port number: ${port}`);
 });
