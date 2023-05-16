@@ -3,6 +3,7 @@ const userController = require("./controllers/userController")
 const postController = require("./controllers/postController")
 const loginController = require("./controllers/loginController")
 const registerController = require("./controllers/registerController")
+const adminController = require("./controllers/adminController")
 const express = require('express');
 const router = express.Router();
 
@@ -32,6 +33,8 @@ router.get("/user/dummyuser", userController.dummyUserPage);
 router.get("/user/:userId", userController.userPage);
 router.patch('/user/:userId', userController.editUserPage);
 router.delete('/user/:userId', userController.deleteUser);
+
+router.get("/admin/users", adminController.showAllUsers);
 
 router.get("/post/create", postController.createPostPage)
 router.post("/post/create", postController.savePost);
