@@ -22,7 +22,8 @@ body {
 
 @media screen and (max-width: 540px) {
     body {
-        padding-top: 125px;
+        padding-top: 90px;
+        padding-bottom: 70px;
     }
 
     #content {
