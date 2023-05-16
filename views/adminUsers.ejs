@@ -1,0 +1,11 @@
+<div style="background-color: white; max-width: 1200px; margin: auto">
+    <table>
+        <% users.forEach(user => { %>
+            <tr>
+                <th><%= user.username %></th>
+                <td><%= user.email %></td>
+                <td><%= user.password %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
