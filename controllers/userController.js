@@ -9,7 +9,7 @@ let dummyUser = {
 }
 
 exports.dummyUserPage = (req, res) => {
-    res.render("user.ejs", {user: dummyUser})
+    res.render("user/user.ejs", {user: dummyUser})
 }
 
 exports.userPage = (req, res) => {
@@ -17,7 +17,7 @@ exports.userPage = (req, res) => {
     User.findById(userId).exec()
         .then(user => {
             if(user !== null) {
-                res.render("user.ejs", {user: user});
+                res.render("user/user.ejs", {user: user});
             }else{
                 res.render("error");
             }
@@ -43,8 +43,39 @@ exports.createUser = (req, res, next) => {
 };
 exports.editUserPage = (req, res) => {
     let userId = req.params.userId;
-    res.send(`This is the page to edit the profile of ${userName}`);
+    User.findById(userId).exec()
+        .then(user => {
+            if(user !== null) {
+                res.render("user/edit_user.ejs", {user: user});
+            }else{
+                res.render("error");
+            }
+        }).catch(error => {
+        console.log(error.message);
+        res.render("error.ejs");
+    });
 };
+
+exports.updateUser = (req, res, next) => {
+    let userId = req.params.userId,
+        userParams = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        };
+    User.findByIdAndUpdate(userId, {
+        $set: userParams
+    })
+        .then(() => {
+            console.log(`Edited user of id: ${userId}`);
+            res.redirect(`/user/${userId}`);
+        })
+        .catch(error => {
+            console.log("Error editing user!: " + error);
+            next();
+        })
+}
+
 exports.deleteUser = (req, res, next) => {
     let userId = req.params.userId;
     User.findByIdAndDelete(userId)

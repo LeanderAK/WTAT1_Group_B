@@ -31,7 +31,8 @@ router.get("/register", registerController.registerPage);
 router.post("/user/create", userController.createUser);
 router.get("/user/dummyuser", userController.dummyUserPage);
 router.get("/user/:userId", userController.userPage);
-router.patch('/user/:userId', userController.editUserPage);
+router.get("/user/:userId/edit", userController.editUserPage);
+router.put("/user/:userId", userController.updateUser);
 router.delete('/user/:userId', userController.deleteUser);
 
 router.get("/admin/users", adminController.showAllUsers);
@@ -39,7 +40,8 @@ router.get("/admin/users", adminController.showAllUsers);
 router.get("/post/create", postController.createPostPage)
 router.post("/post/create", postController.savePost);
 router.get("/post/:postId", postController.postPage);
-router.patch("/post/:postId", postController.editPostPage);
-router.delete("/post/:postId", postController.deletePostPage);
+router.get("/post/:postId/edit", postController.editPostPage)
+router.put("/post/:postId", postController.updatePost);
+router.delete("/post/:postId", postController.deletePost);
 
 module.exports = router;
