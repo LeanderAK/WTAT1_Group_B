@@ -31,7 +31,8 @@ router.get("/register", registerController.registerPage);
 router.post("/user/create", userController.createUser);
 router.get("/user/dummyuser", userController.dummyUserPage);
 router.get("/user/:userId", userController.userPage);
-router.patch('/user/:userId', userController.editUserPage);
+router.get("/user/:userId/edit", userController.editUserPage);
+router.put("/user/:userId", userController.updateUser);
 router.delete('/user/:userId', userController.deleteUser);
 
 router.get("/admin/users", adminController.showAllUsers);

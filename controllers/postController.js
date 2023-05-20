@@ -53,14 +53,14 @@ exports.editPostPage = (req, res) => {
 exports.updatePost = (req, res, next) => {
     let stepsArray = JSON.parse(req.body.steps);
     let postId = req.params.postId,
-        userParams = {
+        postParams = {
             img: req.body.img,
             title: req.body.title,
             description: req.body.description,
             steps: stepsArray,
         };
     Post.findByIdAndUpdate(postId, {
-        $set: userParams
+        $set: postParams
     })
         .then(() => {
             console.log(`Edited post of id: ${postId}`)
@@ -70,7 +70,6 @@ exports.updatePost = (req, res, next) => {
             console.log("Error editing post!: " + error);
             next();
         })
-
 }
 
 exports.deletePost = (req, res, next) => {
