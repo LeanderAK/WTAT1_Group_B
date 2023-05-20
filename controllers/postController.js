@@ -37,9 +37,43 @@ exports.savePost = (req, res, next) => {
 };
 exports.editPostPage = (req, res) => {
     let postId = req.params.postId;
-    res.send(`This is the page to edit the post of id: ${postId}`);
+    Post.findById(postId).exec()
+        .then(post => {
+            if(post !== null) {
+                res.render("edit_post.ejs", {post: post});
+            }else{
+                res.render("error");
+            }
+        }).catch(error => {
+        console.log(error.message);
+        res.render("error.ejs");
+    });
 };
-exports.deletePostPage = (req, res, next) => {
+
+exports.updatePost = (req, res, next) => {
+    let stepsArray = JSON.parse(req.body.steps);
+    let postId = req.params.postId,
+        userParams = {
+            img: req.body.img,
+            title: req.body.title,
+            description: req.body.description,
+            steps: stepsArray,
+        };
+    Post.findByIdAndUpdate(postId, {
+        $set: userParams
+    })
+        .then(() => {
+            console.log(`Edited post of id: ${postId}`)
+            res.redirect(`/post/${postId}`);
+        })
+        .catch(error => {
+            console.log("Error editing post!: " + error);
+            next();
+        })
+
+}
+
+exports.deletePost = (req, res, next) => {
     let postId = req.params.postId;
     Post.findByIdAndDelete(postId)
         .then(() => {

@@ -1,6 +1,11 @@
 let count = 0;
 
-function addStep() {
+function setCount(newCount) {
+    console.log(newCount);
+    count = newCount;
+}
+
+function addStep(textareaValue) {
     count += 1;
 
     const label = document.createElement("label");
@@ -12,6 +17,9 @@ function addStep() {
     textarea.id = "step" + count;
     textarea.name = "step" + count;
     textarea.placeholder = "Erklärung für Schritt " + count + ". ...";
+    if(textareaValue !== undefined) {
+        textarea.innerHTML = textareaValue;
+    }
 
     const div = document.createElement("div");
     div.id = count;

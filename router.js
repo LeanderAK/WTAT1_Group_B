@@ -39,7 +39,8 @@ router.get("/admin/users", adminController.showAllUsers);
 router.get("/post/create", postController.createPostPage)
 router.post("/post/create", postController.savePost);
 router.get("/post/:postId", postController.postPage);
-router.patch("/post/:postId", postController.editPostPage);
-router.delete("/post/:postId", postController.deletePostPage);
+router.get("/post/:postId/edit", postController.editPostPage)
+router.put("/post/:postId", postController.updatePost);
+router.delete("/post/:postId", postController.deletePost);
 
 module.exports = router;
