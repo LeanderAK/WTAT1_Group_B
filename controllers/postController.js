@@ -5,7 +5,7 @@ exports.postPage = (req, res) => {
     Post.findById(postId).exec()
         .then(post => {
             if(post !== null) {
-                res.render("post.ejs", {post: post});
+                res.render("post/post.ejs", {post: post});
             }else{
                 res.render("error");
             }
@@ -15,7 +15,7 @@ exports.postPage = (req, res) => {
     });
 }
 exports.createPostPage = (req, res) => {
-    res.render("create_post.ejs");
+    res.render("post/create_post.ejs");
 };
 exports.savePost = (req, res, next) => {
     let stepsArray = JSON.parse(req.body.steps);
@@ -40,7 +40,7 @@ exports.editPostPage = (req, res) => {
     Post.findById(postId).exec()
         .then(post => {
             if(post !== null) {
-                res.render("edit_post.ejs", {post: post});
+                res.render("post/edit_post.ejs", {post: post});
             }else{
                 res.render("error");
             }

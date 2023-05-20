@@ -9,7 +9,7 @@ let dummyUser = {
 }
 
 exports.dummyUserPage = (req, res) => {
-    res.render("user.ejs", {user: dummyUser})
+    res.render("user/user.ejs", {user: dummyUser})
 }
 
 exports.userPage = (req, res) => {
@@ -17,7 +17,7 @@ exports.userPage = (req, res) => {
     User.findById(userId).exec()
         .then(user => {
             if(user !== null) {
-                res.render("user.ejs", {user: user});
+                res.render("user/user.ejs", {user: user});
             }else{
                 res.render("error");
             }
@@ -46,7 +46,7 @@ exports.editUserPage = (req, res) => {
     User.findById(userId).exec()
         .then(user => {
             if(user !== null) {
-                res.render("edit_user.ejs", {user: user});
+                res.render("user/edit_user.ejs", {user: user});
             }else{
                 res.render("error");
             }
