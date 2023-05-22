@@ -25,5 +25,6 @@ const mongoose = require("mongoose"),
             required: true,
         },
         steps: [stepSchema],
+        user: {required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     });
 module.exports = mongoose.model("Post", postSchema);
