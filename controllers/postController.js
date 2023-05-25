@@ -33,7 +33,7 @@ module.exports = {
             .then(post => {
                 User.findByIdAndUpdate(postParams.user, {
                     $push: {posts: post._id}
-                })
+                }).exec()
                     .then(() => {
                         res.locals.post = post;
                         res.locals.redirect = `/post/${post._id}`;
@@ -77,7 +77,7 @@ module.exports = {
         };
         Post.findByIdAndUpdate(postId, {
             $set: postParams
-        },{runValidators: true})
+        },{runValidators: true}).exec()
             .then(post => {
                 res.locals.post = post;
                 res.locals.redirect = `/post/${postId}`;
@@ -94,13 +94,13 @@ module.exports = {
     },
     delete: (req, res, next) => {
         let postId = req.params.postId;
-        Post.findById(postId)
+        Post.findById(postId).exec()
             .then(post => {
                 User.findByIdAndUpdate(post.user, {
                     $pull: {posts: postId}
-                })
+                }).exec()
                     .then(() => {
-                        Post.findByIdAndRemove(postId)
+                        Post.findByIdAndRemove(postId).exec()
                             .then(() => {
                                 res.locals.redirect = "/";
                                 req.flash("success", `Post ${postId} deleted successfully!`);

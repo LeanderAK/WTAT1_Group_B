@@ -61,9 +61,6 @@ router.get("/logout", userController.logout, userController.redirectView);
 router.get("/register", userController.register);
 router.post("/user/create", userController.create, userController.authenticate);
 
-//Dummy Routes (must be replaced or deleted later)
-router.get("/user/dummyuser", userController.dummyUserPage);
-
 //User Routes
 router.get("/user/:userId", userController.show, userController.showView);
 router.get("/user/:userId/edit", userController.editView);

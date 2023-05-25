@@ -1,14 +1,6 @@
 const User = require("../models/user"),
     passport = require("passport");
 
-let dummyUser = {
-    username: "dummyUser123",
-    email: "dummy.user123@abc.de",
-    password: "12345678",
-    favorites: [],
-    posts: [],
-}
-
 module.exports = {
     index: (req, res, next) => {
         User.find().exec()
@@ -38,9 +30,6 @@ module.exports = {
     },
     showView: (req, res) => {
         res.render("user/user.ejs")
-    },
-    dummyUserPage: (req, res) => {
-        res.render("user/user.ejs", {user: dummyUser})
     },
     register: (req, res) => {
         res.render("user/register.ejs")
@@ -103,7 +92,7 @@ module.exports = {
                     };
                     User.findByIdAndUpdate(userId, {
                         $set: userParams
-                    }, {runValidators: true})
+                    }, {runValidators: true}).exec()
                         .then(user => {
                             res.locals.user = user;
                             res.locals.redirect = `/user/${userId}`;
@@ -128,7 +117,7 @@ module.exports = {
     },
     delete: (req, res, next) => {
         let userId = req.params.userId;
-        User.findByIdAndRemove(userId)
+        User.findByIdAndRemove(userId).exec()
             .then(() => {
                 res.locals.redirect = "/register";
                 req.flash("success", `User ${userId} deleted successfully!`);
