@@ -445,33 +445,58 @@ function createData(){
     const postArray = [];
     const userArray = [];
 
-    posts.forEach((post) => {
-        postArray.push(Post.create({
-            title: post.title,
-            description: post.description,
-            img: post.img,
-            steps: post.steps
-        }));
-    });
-
     users.forEach((user) => {
-        userArray.push(User.create({
+        let newUser = new User({
             username: user.username,
             email: user.email,
             password: user.password,
             favorites: user.favorites,
             posts: user.posts
-        }));
+        });
+        userArray.push(User.register(newUser, user.password));
     });
 
-    Promise.all(postArray, userArray)
-        .then(() => {
-            console.log("Created all dummy posts and users");
-            mongoose.connection.close();
+    Promise.all(userArray)
+        .then(users => {
+            console.log("Created all dummy users");
+            posts.forEach((post) => {
+                const randomUser = users[Math.floor(Math.random() * users.length)]._id;
+                postArray.push(Post.create({
+                    title: post.title,
+                    description: post.description,
+                    img: post.img,
+                    steps: post.steps,
+                    user: randomUser,
+                }));
+            });
+            Promise.all(postArray)
+                .then(createdPosts => {
+                    console.log("Created all dummy posts");
+                    const finishedUsers = [];
+                    createdPosts.forEach(post => {
+                        finishedUsers.push(User.findByIdAndUpdate(post.user, {
+                            $push: {posts: post._id}
+                        }));
+                    });
+                    Promise.all(finishedUsers)
+                        .then(() => {
+                            console.log("Associated Users with Posts");
+                            mongoose.connection.close();
+                        })
+                        .catch(error => {
+                            console.log(`ERROR: ${error}`)
+                            mongoose.connection.close();
+                        });
+                })
+                .catch(error => {
+                    console.log(`ERROR: ${error}`);
+                    mongoose.connection.close();
+                });
         })
         .catch(error => {
             console.log(`ERROR: ${error}`);
-        });
+            mongoose.connection.close();
+        })
 }
 
 removeAllAndReplace();

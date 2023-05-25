@@ -5,6 +5,15 @@
 </head>
 <body>
 <%- include('partials/navigation.ejs') %>
+<div>
+    <% if (flashMessages) { %>
+        <% if (flashMessages.success) { %>
+            <div><%= flashMessages.success %></div>
+        <% } else if (flashMessages.error) { %>
+            <div><%= flashMessages.error %></div>
+        <% } %>
+    <% } %>
+</div>
 <div id="content">
     <%- body %>
 </div>

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"),
+    passportLocalMongoose = require("passport-local-mongoose"),
     userSchema = mongoose.Schema({
         username: {
             type: String,
@@ -9,11 +10,16 @@ const mongoose = require("mongoose"),
             type: String,
             required: true,
         },
-        password: {
-            type: String,
-            required: true,
+        favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+        posts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+        isAdmin: {
+            type: Boolean,
+            default: false,
         },
-        favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
-        posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
     });
+
+userSchema.plugin(passportLocalMongoose, {
+    usernameField: "username",
+});
+
 module.exports = mongoose.model("User", userSchema);

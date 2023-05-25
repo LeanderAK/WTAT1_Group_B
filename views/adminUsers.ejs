@@ -15,13 +15,17 @@
 </style>
 <div style="background-color: white; max-width: fit-content; margin: auto">
     <table>
-        <tr><th>UserId</th><th>Username</th><th>Email</th><th>Password</th></tr>
+        <tr><th>UserId</th><th>Username</th><th>Email</th><th>Posts</th></tr>
         <% users.forEach(user => { %>
             <tr>
-                <td><%= user._id %></td>
+                <td><a href="<%=`/user/${user._id}`%>"><%= user._id %></a></td>
                 <td><%= user.username %></td>
                 <td><%= user.email %></td>
-                <td><%= user.password %></td>
+                <td>
+                    <% user.posts.forEach(post => { %>
+                        <div><a href="<%= `/post/${post._id}`%>"><%= `${post._id}` %></a></div>
+                    <% }) %>
+                </td>
             </tr>
         <% }) %>
     </table>

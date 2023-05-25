@@ -1,5 +1,10 @@
 # WTAT1_Group_B
 
+## Admin Route
+
+Visit `/admin/users` to get an overview of all existing users including links to their profiles and their created posts.
+This is useful for testing the DB relations and quickly navigating to CRUD commands of specific documents.
+
 ## Database Commands
 
 Start mongodb server in a new terminal with
