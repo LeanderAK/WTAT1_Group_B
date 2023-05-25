@@ -7,6 +7,7 @@
         </div>
         <h1 id="postTitle"><%= post.title %></h1>
         <div id="postDescription"> <%= post.description %></div>
+        <% if (loggedIn && (currentUser._id.equals(post.user._id) || currentUser.isAdmin)) { %>
         <div class="postButtons">
             <a class="postButton" href=<%= `/post/${post._id}/edit` %>>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g><path d="M7.5,9l-3,.54L5,6.5,10.73.79a1,1,0,0,1,1.42,0l1.06,1.06a1,1,0,0,1,0,1.42Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12,9.5v3a1,1,0,0,1-1,1H1.5a1,1,0,0,1-1-1V3a1,1,0,0,1,1-1h3" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
@@ -15,6 +16,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g><polyline points="11.5 5.5 10.5 13.5 3.5 13.5 2.5 5.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></polyline><line x1="1" y1="3.5" x2="13" y2="3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></line><path d="M4.46,3.21l0-1.73a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1v2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
             </a>
         </div>
+        <% } %>
     </div>
     <% if(post.img){ %>
         <img id="postImage" alt="Post Image" src=<%= post.img %>>

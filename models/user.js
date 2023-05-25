@@ -12,6 +12,10 @@ const mongoose = require("mongoose"),
         },
         favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
         posts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+        isAdmin: {
+            type: Boolean,
+            default: false,
+        },
     });
 
 userSchema.plugin(passportLocalMongoose, {
