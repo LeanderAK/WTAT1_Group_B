@@ -40,6 +40,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 router.use((req, res, next) => {
+    res.locals.tags = ['Kinder', 'Dekoration', 'Textilien', 'Weihnachten', 'Ostern', 'Halloween', 'Herbst', 'Frühling', 'Winter', 'Sommer', 'Lifehack', 'Garten', 'Origami', 'Schmuck', 'Karten', 'Upcycling'];
     res.locals.flashMessages = req.flash();
     res.locals.loggedIn = req.isAuthenticated();
     res.locals.currentUser = req.user;

@@ -39,3 +39,16 @@ function removeStep() {
         count -= 1;
     }
 }
+
+function handleTagSelect(index) {
+    let checkbox = document.getElementById("tag" + index);
+    checkbox.className = null;
+    let tagDiv = document.getElementById("tagDiv" + index);
+    if(checkbox.checked) {
+        checkbox.checked = false;
+        tagDiv.className = "tag";
+    }else{
+        checkbox.checked = true;
+        tagDiv.className = "tag tagSelected";
+    }
+}
