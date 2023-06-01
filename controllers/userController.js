@@ -116,6 +116,8 @@ module.exports = {
             })
     },
     delete: (req, res, next) => {
+        //delete all posts created by the user
+        //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
         User.findByIdAndRemove(userId).exec()
             .then(() => {
@@ -146,7 +148,7 @@ module.exports = {
                 return next(error);
             } else {
                 req.flash("success", "You have been logged out!");
-                res.locals.redirect = "/";
+                res.locals.redirect = "/login";
                 next();
             }
         });

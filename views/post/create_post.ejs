@@ -7,7 +7,8 @@
         <div id="formGrid">
             <div class="inputGroup">
                 <label for="title">Titel</label>
-                <input id="title" class="textInput" type="text" name="title" maxlength="50" placeholder="Titel..." required>
+                <input id="title" class="textInput" type="text" name="title" maxlength="50" placeholder="Titel..."
+                       required>
             </div>
             <div class="inputGroup">
                 <label for="img">Bild</label>
@@ -17,6 +18,17 @@
                 <label for="description">Kurze Beschreibung</label>
                 <textarea id="description" class="textInput" name="description" maxlength="250"
                           placeholder="Eine kurze Beschreibung..." required></textarea>
+            </div>
+            <div class="inputGroup">
+                <label>Tags</label>
+                <div id="tagsContainer">
+                    <% tags.forEach((tag, index) => { %>
+                        <div onclick="handleTagSelect(<%= index %>)" id="<%= `tagDiv${index}` %>" class="tag">
+                            <label for="<%= `tag${index}` %>"><%= tag %></label>
+                            <input disabled="disabled" class="checkbox" value="<%= tag %>" id="<%= `tag${index}` %>" type="checkbox" name="<%= `tag${index}` %>">
+                        </div>
+                    <% }) %>
+                </div>
             </div>
         </div>
         <h2 id="stepsHeader">Anleitungsschritte</h2>
@@ -46,9 +58,26 @@
 </div>
 </body>
 <script>
+    //set all tags unchecked on load
+    let checkboxes = document.getElementsByClassName("checkbox");
+    for(const box of checkboxes){
+        box.checked = false;
+    }
+
+    //build steps and tags array from the separate steps and attach to formData
     let createPostForm = document.getElementById("createPostForm");
     createPostForm.addEventListener('formdata', (e) => {
         const formData = e.formData;
+        let tagsArray = [];
+        let tags = JSON.parse(`<%- JSON.stringify(tags) %>`);
+        for (let i = 0; i < tags.length; i++) {
+            let input = document.getElementById("tag" + i);
+            if (input.checked) {
+                tagsArray.push(input.value);
+            }
+            formData.delete("tag" + i);
+        }
+        formData.append('tags', JSON.stringify(tagsArray));
         let stepArray = [];
         for (let i = 1; i <= count; i++) {
             let input = document.getElementById("step" + i);

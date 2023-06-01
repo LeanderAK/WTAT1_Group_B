@@ -24,6 +24,10 @@ const mongoose = require("mongoose"),
             type: String,
             required: true,
         },
+        tags: {
+            type: [String],
+            index: true
+        },
         steps: [stepSchema],
         user: {required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     });

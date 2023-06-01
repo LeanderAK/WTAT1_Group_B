@@ -21,12 +21,13 @@ module.exports = {
         res.render("post/create_post.ejs")
     },
     create: (req, res, next) => {
-        let stepsArray = JSON.parse(req.body.steps);
         let postParams = {
             img: req.body.img,
             title: req.body.title,
             description: req.body.description,
-            steps: stepsArray,
+            tags: JSON.parse(req.body.tags),
+            time: req.body.time,
+            steps: JSON.parse(req.body.steps),
             user: req.user._id,
         };
         Post.create(postParams)
@@ -68,12 +69,13 @@ module.exports = {
     },
     update: (req, res, next) => {
         let postId = req.params.postId;
-        let stepsArray = JSON.parse(req.body.steps);
         let postParams = {
             img: req.body.img,
             title: req.body.title,
             description: req.body.description,
-            steps: stepsArray,
+            tags: JSON.parse(req.body.tags),
+            time: req.body.time,
+            steps: JSON.parse(req.body.steps),
         };
         Post.findByIdAndUpdate(postId, {
             $set: postParams

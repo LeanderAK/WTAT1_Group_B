@@ -18,6 +18,17 @@
                 <textarea id="description" class="textInput" name="description" maxlength="250"
                           placeholder="Eine kurze Beschreibung..." required><%= post.description %></textarea>
             </div>
+            <div class="inputGroup">
+                <label>Tags</label>
+                <div id="tagsContainer">
+                    <% tags.forEach((tag, index) => { %>
+                        <div onclick="handleTagSelect(<%= index %>)" id="<%= `tagDiv${index}` %>" class="<%= post.tags.includes(tag) ? `tag tagSelected` : `tag`%>">
+                            <label for="<%= `tag${index}` %>"><%= tag %></label>
+                            <input disabled="disabled" class="checkbox" value="<%= tag %>" id="<%= `tag${index}` %>" type="checkbox" name="<%= `tag${index}` %>">
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
         </div>
         <h2 id="stepsHeader">Anleitungsschritte</h2>
         <div id="stepsContainer">
@@ -53,9 +64,27 @@
 </div>
 </body>
 <script>
+    //set tags to checked if post document contains the respective tags
+    let checkboxes = document.getElementsByClassName("checkbox");
+    const postTags = JSON.parse(`<%- JSON.stringify(post.tags) %>`);
+    for(const box of checkboxes){
+        box.checked = !!postTags.includes(box.value);
+    }
+
+    //build steps and tags array from the separate steps and attach to formData
     let createPostForm = document.getElementById("createPostForm");
     createPostForm.addEventListener('formdata', (e) => {
         const formData = e.formData;
+        let tagsArray = [];
+        let tags = JSON.parse(`<%- JSON.stringify(tags) %>`);
+        for (let i = 0; i < tags.length; i++) {
+            let input = document.getElementById("tag" + i);
+            if (input.checked) {
+                tagsArray.push(input.value);
+            }
+            formData.delete("tag" + i);
+        }
+        formData.append('tags', JSON.stringify(tagsArray));
         let stepArray = [];
         for (let i = 1; i <= count; i++) {
             let input = document.getElementById("step" + i);
