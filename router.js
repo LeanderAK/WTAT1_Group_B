@@ -64,15 +64,15 @@ router.post("/user/create", userController.create, userController.authenticate);
 
 //User Routes
 router.get("/user/:userId", userController.show, userController.showView);
-router.get("/user/:userId/edit", userController.editView);
+router.get("/user/:userId/edit", userController.editView, userController.redirectView);
 router.put("/user/:userId", userController.update, userController.redirectView);
 router.delete('/user/:userId', userController.delete, userController.redirectView);
 
 //Post Routes
-router.get("/post/create", postController.new)
+router.get("/post/create", postController.new, postController.redirectView);
 router.post("/post/create", postController.create, postController.redirectView);
 router.get("/post/:postId", postController.show, postController.showView);
-router.get("/post/:postId/edit", postController.editView)
+router.get("/post/:postId/edit", postController.editView, postController.redirectView);
 router.put("/post/:postId", postController.update, userController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
 

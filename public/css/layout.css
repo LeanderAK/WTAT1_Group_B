@@ -14,9 +14,68 @@ body {
     padding-right: 30px;
 }
 
+#alertMessage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    -moz-animation: cssAnimation ease-in 5s forwards;
+    /* Firefox */
+    -webkit-animation: cssAnimation ease-in 5s forwards;
+    /* Safari and Chrome */
+    -o-animation: cssAnimation ease-in 5s forwards;
+    /* Opera */
+    animation: cssAnimation ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+    z-index: 1;
+    padding: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.3);
+    border: black 1px solid;
+    border-radius: 50px;
+    text-align: center;
+    color: black;
+}
+
+#alertMessage svg {
+    width: 25px;
+    height: 25px;
+}
+
+#success {
+    color: forestgreen;
+}
+
+#error {
+    color: red;
+}
+
+@keyframes cssAnimation {
+    0%   {opacity: 0;}
+    5%   {opacity: 1;}
+    90%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+@-webkit-keyframes cssAnimation {
+    0%   {opacity: 0;}
+    5%   {opacity: 1;}
+    90%  {opacity: 1;}
+    100% {opacity: 0;}
+}
+
 @media screen and (max-width: 1000px) {
     body {
         padding-top: 145px;
+    }
+
+    #alertMessage {
+        top: 135px;
     }
 }
 
@@ -29,5 +88,9 @@ body {
     #content {
         padding-left: 10px;
         padding-right: 10px;
+    }
+
+    #alertMessage {
+        top: 85px;
     }
 }

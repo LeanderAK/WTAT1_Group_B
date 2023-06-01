@@ -67,14 +67,26 @@ module.exports = {
     },
     editView: (req, res, next) => {
         let userId = req.params.userId;
-        User.findById(userId).exec()
-            .then(user => {
-                res.render("user/edit_user.ejs", {user: user});
-            })
-            .catch(error => {
-                console.log(`Error fetching user by ID: ${userId}\n${error.message}`);
-                next(error);
-            });
+        if(req.isAuthenticated()) {
+            User.findById(userId).exec()
+                .then(user => {
+                    if((req.user.isAdmin) || (user._id.equals(req.user._id))) {
+                        res.render("user/edit_user.ejs", {user: user});
+                    } else {
+                        res.locals.redirect = "/user/" + userId;
+                        req.flash("error", `You are not authorised to edit this user`);
+                        next();
+                    }
+                })
+                .catch(error => {
+                    console.log(`Error fetching user by ID: ${userId}\n${error.message}`);
+                    next(error);
+                });
+        } else {
+            res.locals.redirect = "/user/" + userId;
+            req.flash("error", `You are not logged in`);
+            next();
+        }
     },
     update: (req, res, next) => {
         let userId = req.params.userId;
@@ -119,19 +131,31 @@ module.exports = {
         //delete all posts created by the user
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
-        User.findByIdAndRemove(userId).exec()
-            .then(() => {
-                res.locals.redirect = "/register";
-                req.flash("success", `User ${userId} deleted successfully!`);
-                console.log(`Deleted User: ${userId}`);
+        if(req.isAuthenticated()) {
+            if((req.user.isAdmin) || (req.user._id.equals(userId))) {
+                User.findByIdAndRemove(userId).exec()
+                    .then(() => {
+                        res.locals.redirect = "/register";
+                        req.flash("success", `User ${userId} deleted successfully!`);
+                        console.log(`Deleted User: ${userId}`);
+                        next();
+                    })
+                    .catch(error => {
+                        res.locals.redirect = `/user/${userId}`;
+                        req.flash("error", `Failed to delete user ${userId} because: ${error.message}`);
+                        console.log(`Error deleting user by ID: ${userId}\n${error.message}`);
+                        next();
+                    });
+            } else {
+                res.locals.redirect = "/user/" + userId;
+                req.flash("error", `You are not authorised to delete this user`);
                 next();
-            })
-            .catch(error => {
-                res.locals.redirect = `/user/${userId}`;
-                req.flash("error", `Failed to delete user ${userId} because: ${error.message}`);
-                console.log(`Error deleting user by ID: ${userId}\n${error.message}`);
-                next();
-            });
+            }
+        } else {
+            res.locals.redirect = "/user/" + userId;
+            req.flash("error", `You are not logged in`);
+            next();
+        }
     },
     login: (req, res) => {
         res.render("user/login.ejs");
