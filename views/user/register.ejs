@@ -12,18 +12,16 @@
             <label for="email"><b>Email</b>
             <input type="text" placeholder="Enter Email" name="email" required>
             </label>
-
-            <label for="email"><b>Repeat Email</b>
-            <input type="text" placeholder="Enter Email again" name="emailRepeat" required>
-            </label>
         
             <label for="password"><b>Password</b>
-            <input type="password" placeholder="Enter Password" name="password" required>
+            <input type="password" placeholder="Enter Password" id="password" name="password" required>
             </label>
 
             <label for="password"><b>Repeat Password</b>
-            <input type="password" placeholder="Enter Password" name="passwordRepeat" required>
+            <input onchange="validateFunction()" type="password" placeholder="Enter Password" id="passwordRepeat" name="passwordRepeat" required>
             </label>
+
+            <div id="passwordMessage"></div>
         
             <button type="submit">Register</button>
             <label for="isAdmin">
@@ -31,11 +29,34 @@
             </label>
           </div>
         
-          <div class="container" style="background-color:#f1f1f1">
-            <button type="button" class="cancelbtn">Cancel</button>
-            <span class="psw">
+          <div class="container" style="background-color:#f1f1f1; display: flex; align-items: center; justify-content: space-between">
+            <a href="/" type="button" class="cancelbtn">Cancel</a>
+            <div class="psw">
               Have a profile already? <a href="/login">Login</a>
-            </span>
+            </div>
           </div>
    </form>
+   <script>
+     const form = document.getElementById("registerForm");
+
+     function validateFunction() {
+       const password = document.getElementById("password").value;
+       const passwordRepeat = document.getElementById("passwordRepeat").value;
+       const message = document.getElementById("passwordMessage");
+       if(password !== passwordRepeat){
+          message.innerHTML = "Passwords do not match";
+          return false;
+       }else{
+          message.innerHTML = "";
+          return true;
+       }
+     }
+
+     form.addEventListener("submit", (event) => {
+       const valid = validateFunction(event);
+       if(!valid){
+         event.preventDefault();
+       }
+     });
+   </script>
 </body>

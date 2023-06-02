@@ -44,20 +44,20 @@ module.exports = {
                     .then(() => {
                         res.locals.post = post;
                         res.locals.redirect = `/post/${post._id}`;
-                        req.flash("success", `Post ${post._id} created successfully!`);
+                        req.flash("success", `Post uploaded`);
                         console.log(`Created Post: ${post._id}`);
                         next();
                     })
                     .catch(error => {
                         res.locals.redirect = `/post/create`;
-                        req.flash("error", `Failed to create post because: ${error.message}`);
+                        req.flash("error", `Failed to create post`);
                         console.log(`Error creating post: ${error.message}`);
                         next();
                     });
             })
             .catch(error => {
                 res.locals.redirect = `/post/create`;
-                req.flash("error", `Failed to create post because: ${error.message}`);
+                req.flash("error", `Failed to create post`);
                 console.log(`Error creating post: ${error.message}`);
                 next();
             });
@@ -101,13 +101,13 @@ module.exports = {
             .then(post => {
                 res.locals.post = post;
                 res.locals.redirect = `/post/${postId}`;
-                req.flash("success", `Post ${postId} updated successfully!`);
+                req.flash("success", `Post updated`);
                 console.log(`Updated Post: ${postId}`);
                 next();
             })
             .catch(error => {
                 res.locals.redirect = `/post/${postId}/edit`;
-                req.flash("error", `Failed to update post ${postId} because: ${error.message}`);
+                req.flash("error", `Failed to update post`);
                 console.log(`Error updating post by ID: ${postId}\n${error.message}`);
                 next();
             });
@@ -125,20 +125,20 @@ module.exports = {
                                 Post.findByIdAndRemove(postId).exec()
                                     .then(() => {
                                         res.locals.redirect = "/";
-                                        req.flash("success", `Post ${postId} deleted successfully!`);
+                                        req.flash("success", `Post deleted`);
                                         console.log(`Deleted Post: ${postId}`);
                                         next();
                                     })
                                     .catch(error => {
                                         res.locals.redirect = `/post/${postId}`;
-                                        req.flash("error", `Failed to delete post ${postId} because: ${error.message}`);
+                                        req.flash("error", `Failed to delete post`);
                                         console.log(`Error deleting post by ID: ${postId}\n${error.message}`);
                                         next();
                                     });
                             })
                             .catch(error => {
                                 res.locals.redirect = `/post/${postId}`;
-                                req.flash("error", `Failed to remove post ${postId} from User because: ${error.message}`);
+                                req.flash("error", `Failed to remove post from your Account`);
                                 console.log(`Error removing post by User: ${post.user}\n${error.message}`);
                                 next();
                             });
@@ -150,7 +150,7 @@ module.exports = {
                 })
                 .catch(error => {
                     res.locals.redirect = `/post/${postId}`;
-                    req.flash("error", `Cannot find User ${post.user} because: ${error.message}`);
+                    req.flash("error", `Cannot find User`);
                     console.log(`Error finding User ${post.user}: ${error.message}`)
                 })
         } else {

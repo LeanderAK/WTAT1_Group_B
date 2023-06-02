@@ -1,5 +1,6 @@
 const User = require("../models/user"),
     passport = require("passport");
+const {redirectView} = require("./postController");
 
 module.exports = {
     index: (req, res, next) => {
@@ -37,40 +38,45 @@ module.exports = {
     create: (req, res, next) => {
         if (req.skip) next();
         if (req.body.password.length < 8) {
-            req.flash("error", "Password must contain at least 8 symbols!");
+            req.flash("error", "Password must contain at least 8 symbols");
             res.locals.redirect = "/register";
-            next();
+            redirectView(req, res, next);
         } else {
-            let admin = false;
-            if(req.body.isAdmin) {
-                admin = true;
-            }
-            let userParams = {
-                username: req.body.username,
-                email: req.body.email,
-                password: req.body.password,
-                isAdmin: admin,
-            };
-            let newUser = new User(userParams);
-            User.register(newUser, req.body.password, (error, user) => {
-                if (user) {
-                    req.flash("success", `${user.username}'s account created successfully!`);
-                    console.log(`Created User: ${user._id}`);
-                    next();
-                } else {
-                    req.flash("error", `Failed to create user account because: ${error.message}`);
-                    console.log(`Error creating user: ${error.message}`);
-                    next();
-                }
-            });
+            let name = req.body.username;
+            User.findOne({username: name}).exec()
+                .then(user => {
+                    req.flash("error", `Username \"${user.username}\" already exists`);
+                    res.locals.redirect = "/register";
+                    redirectView(req, res, next);
+                })
+                .catch(() => {
+                    let userParams = {
+                        username: req.body.username,
+                        email: req.body.email,
+                        password: req.body.password,
+                        isAdmin: req.body.isAdmin,
+                    };
+                    let newUser = new User(userParams);
+                    User.register(newUser, req.body.password, (error, user) => {
+                        if (user) {
+                            req.flash("success", `${user.username}'s account created`);
+                            console.log(`Created User: ${user._id}`);
+                            next();
+                        } else {
+                            req.flash("error", `Failed to register user`);
+                            console.log(`Error creating user: ${error.message}`);
+                            next();
+                        }
+                    });
+                })
         }
     },
     editView: (req, res, next) => {
         let userId = req.params.userId;
-        if(req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
             User.findById(userId).exec()
                 .then(user => {
-                    if((req.user.isAdmin) || (user._id.equals(req.user._id))) {
+                    if ((req.user.isAdmin) || (user._id.equals(req.user._id))) {
                         res.render("user/edit_user.ejs", {user: user});
                     } else {
                         res.locals.redirect = "/user/" + userId;
@@ -92,9 +98,9 @@ module.exports = {
         let userId = req.params.userId;
         User.exists({username: req.body.username}).exec()
             .then(result => {
-                if(result) {
+                if (result) {
                     res.locals.redirect = `/user/${userId}/edit`;
-                    req.flash("error", `Failed to update user ${userId} because: username already exists`);
+                    req.flash("error", `Username already exists`);
                     console.log(`Error updating user by ID: ${userId}\n User with this username already exists.`);
                     next();
                 } else {
@@ -108,13 +114,13 @@ module.exports = {
                         .then(user => {
                             res.locals.user = user;
                             res.locals.redirect = `/user/${userId}`;
-                            req.flash("success", `${user.username}'s account updated successfully!`);
+                            req.flash("success", `${user.username}'s account updated`);
                             console.log(`Updated User: ${userId}`);
                             next();
                         })
                         .catch(error => {
                             res.locals.redirect = `/user/${userId}/edit`;
-                            req.flash("error", `Failed to update user ${userId} because: ${error.message}`);
+                            req.flash("error", `Failed to update user`);
                             console.log(`Error updating user by ID: ${userId}\n${error.message}`);
                             next();
                         });
@@ -122,7 +128,7 @@ module.exports = {
             })
             .catch(error => {
                 res.locals.redirect = `/user/${userId}/edit`;
-                req.flash("error", `Failed to update user ${userId} because: ${error.message}`);
+                req.flash("error", `Failed to update user`);
                 console.log(`Error updating user by ID: ${userId}\n${error.message}`);
                 next();
             })
@@ -131,18 +137,18 @@ module.exports = {
         //delete all posts created by the user
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
-        if(req.isAuthenticated()) {
-            if((req.user.isAdmin) || (req.user._id.equals(userId))) {
+        if (req.isAuthenticated()) {
+            if ((req.user.isAdmin) || (req.user._id.equals(userId))) {
                 User.findByIdAndRemove(userId).exec()
                     .then(() => {
                         res.locals.redirect = "/register";
-                        req.flash("success", `User ${userId} deleted successfully!`);
+                        req.flash("success", `User deleted successfully`);
                         console.log(`Deleted User: ${userId}`);
                         next();
                     })
                     .catch(error => {
                         res.locals.redirect = `/user/${userId}`;
-                        req.flash("error", `Failed to delete user ${userId} because: ${error.message}`);
+                        req.flash("error", `Failed to delete user`);
                         console.log(`Error deleting user by ID: ${userId}\n${error.message}`);
                         next();
                     });
@@ -162,16 +168,16 @@ module.exports = {
     },
     authenticate: passport.authenticate("local", {
         failureRedirect: "/login",
-        failureFlash: "Failed to login.",
+        failureFlash: "Username or Password incorrect",
         successRedirect: "/",
-        successFlash: "Logged in!"
+        successFlash: "Logged in"
     }),
     logout: (req, res, next) => {
         req.logout(error => {
             if (error) {
                 return next(error);
             } else {
-                req.flash("success", "You have been logged out!");
+                req.flash("success", "You have been logged out");
                 res.locals.redirect = "/login";
                 next();
             }
