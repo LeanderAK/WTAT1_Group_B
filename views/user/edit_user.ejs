@@ -1,11 +1,22 @@
+<link rel="stylesheet" href="/css/login.css">
+<body>
 <form id="registerForm" action="<%= `/user/${user._id}?_method=PUT` %>" method="post">
-    <label for="username"><b>Username</b>
-        <input type="text" placeholder="Enter Username" name="username" value="<%= user.username %>" required>
-    </label>
+    <div class="container">
+        <label for="username"><b>Username</b>
+            <input type="text" placeholder="Enter Username" name="username" value="<%= user.username %>" required>
+        </label>
 
-    <label for="email"><b>Email</b>
-        <input type="text" placeholder="Enter Email" name="email" value="<%= user.email %>" required>
-    </label>
-
-    <button type="submit">Speichern</button>
+        <label for="email"><b>Email</b>
+            <input type="text" placeholder="Enter Email" name="email" value="<%= user.email %>" required>
+        </label>
+    </div>
+    <div class="container">
+        <label for="password"><b>Confirm with Password</b>
+            <input type="password" placeholder="Enter Password" id="password" name="password" required>
+        </label>
+    </div>
+    <div id="containerFooter" class="container">
+        <button type="submit">Speichern</button>
+    </div>
 </form>
+</body>

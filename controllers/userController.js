@@ -94,44 +94,45 @@ module.exports = {
             next();
         }
     },
-    update: (req, res, next) => {
+    authenticateUpdate: (req, res, next) => {
         let userId = req.params.userId;
-        User.exists({username: req.body.username}).exec()
-            .then(result => {
-                if (result) {
+        User.findOne({username: req.body.username}).exec()
+            .then(user => {
+                if (!user._id.equals(userId)) {
                     res.locals.redirect = `/user/${userId}/edit`;
                     req.flash("error", `Username already exists`);
                     console.log(`Error updating user by ID: ${userId}\n User with this username already exists.`);
-                    next();
+                    redirectView(req, res, next);
                 } else {
-                    let userParams = {
-                        username: req.body.username,
-                        email: req.body.email,
-                    };
-                    User.findByIdAndUpdate(userId, {
-                        $set: userParams
-                    }, {runValidators: true}).exec()
-                        .then(user => {
-                            res.locals.user = user;
-                            res.locals.redirect = `/user/${userId}`;
-                            req.flash("success", `${user.username}'s account updated`);
-                            console.log(`Updated User: ${userId}`);
-                            next();
-                        })
-                        .catch(error => {
-                            res.locals.redirect = `/user/${userId}/edit`;
-                            req.flash("error", `Failed to update user`);
-                            console.log(`Error updating user by ID: ${userId}\n${error.message}`);
-                            next();
-                        });
+                    next();
                 }
+            })
+            .catch(() => {
+                next();
+            })
+    },
+    update: (req, res, next) => {
+        let userId = req.params.userId;
+        let userParams = {
+            username: req.body.username,
+            email: req.body.email,
+        };
+        User.findByIdAndUpdate(userId, {
+            $set: userParams
+        }, {runValidators: true}).exec()
+            .then(user => {
+                res.locals.user = user;
+                res.locals.redirect = `/user/${userId}`;
+                req.flash("success", `${user.username}'s account updated`);
+                console.log(`Updated User: ${userId}`);
+                next();
             })
             .catch(error => {
                 res.locals.redirect = `/user/${userId}/edit`;
                 req.flash("error", `Failed to update user`);
                 console.log(`Error updating user by ID: ${userId}\n${error.message}`);
-                next();
-            })
+                redirectView(req, res, next);
+            });
     },
     delete: (req, res, next) => {
         //delete all posts created by the user

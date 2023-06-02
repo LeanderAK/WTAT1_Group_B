@@ -65,7 +65,7 @@ router.post("/user/create", userController.create, userController.authenticate);
 //User Routes
 router.get("/user/:userId", userController.show, userController.showView);
 router.get("/user/:userId/edit", userController.editView, userController.redirectView);
-router.put("/user/:userId", userController.update, userController.redirectView);
+router.put("/user/:userId", userController.authenticateUpdate, userController.update, userController.authenticate);
 router.delete('/user/:userId', userController.delete, userController.redirectView);
 
 //Post Routes
@@ -73,7 +73,7 @@ router.get("/post/create", postController.new, postController.redirectView);
 router.post("/post/create", postController.create, postController.redirectView);
 router.get("/post/:postId", postController.show, postController.showView);
 router.get("/post/:postId/edit", postController.editView, postController.redirectView);
-router.put("/post/:postId", postController.update, userController.redirectView);
+router.put("/post/:postId", postController.update, postController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
 
 //Admin Routes
