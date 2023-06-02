@@ -19,6 +19,7 @@ db.once("open", () => {
 
 app.set("view engine", "ejs")
 app.use(layouts)
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.json());
