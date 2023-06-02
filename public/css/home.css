@@ -1,4 +1,4 @@
-a {
+#cardButtons a {
     text-decoration: none;
     color: black;
 }
@@ -95,6 +95,36 @@ a {
     margin: 5px 0 5px 0;
     font-weight: bold;
     font-size: 20px;
+}
+
+.userCard {
+    display: block;
+    text-decoration: none;
+    color: black;
+    max-width: 600px;
+    margin: auto auto 10px;
+    overflow: hidden;
+    transition: transform .1s;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.15);
+}
+
+.userCard:hover {
+    transform: scale(1.01);
+}
+
+.userCardContent {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+}
+
+#usernameUserCard {
+    font-weight: bold;
 }
 
 @media screen and (max-width: 1200px) {

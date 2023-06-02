@@ -29,9 +29,18 @@
             </a>
         <% } %>
     </div>
-    <label id="label">
-        <input id="searchbar" type="text" placeholder="Suche...">
-    </label>
+    <form autocomplete="off" id="search" action="/" method="POST">
+        <label id="label">
+            <input onchange="submitForm()" id="searchbar" name="payload" type="text" placeholder="Suche...">
+        </label>
+        <div id="searchTypeContainer">
+            <label for="searchType"></label>
+            <select id="searchType" name="searchType">
+                <option value="post">DIYs</option>
+                <option value="user">Users</option>
+            </select>
+        </div>
+    </form>
     <div id="right-nav">
         <% if (loggedIn) { %>
             <a class="button" id="messages">
@@ -123,3 +132,13 @@
         <% } %>
     </div>
 </div>
+<script>
+    //keep searchType from previous search
+    const searchType = JSON.parse(`<%- JSON.stringify(searchType) %>`);
+    const select = document.getElementById("searchType");
+    select.value = searchType;
+
+    function submitForm() {
+        document.getElementById("search").submit();
+    }
+</script>

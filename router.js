@@ -40,6 +40,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 router.use((req, res, next) => {
+    res.locals.searchType = "post";
     res.locals.tags = ['Kinder', 'Dekoration', 'Textilien', 'Weihnachten', 'Ostern', 'Halloween', 'Herbst', 'Frühling', 'Winter', 'Sommer', 'Lifehack', 'Garten', 'Origami', 'Schmuck', 'Karten', 'Upcycling'];
     res.locals.flashMessages = req.flash();
     res.locals.loggedIn = req.isAuthenticated();
@@ -53,7 +54,8 @@ The ':' indicates the use of a parameter within the path.
 */
 
 //General Routes
-router.get("/", homeController.showHome);
+router.get("/", homeController.getAllPosts, homeController.home);
+router.post("/", homeController.search);
 
 //Auth Routes
 router.get("/login", userController.login);
