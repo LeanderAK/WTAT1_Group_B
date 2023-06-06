@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const User = require("../models/user");
+const {isAuthorized} = require("../public/js/authFunctions");
 
 module.exports = {
     show: (req, res, next) => {
@@ -67,7 +68,7 @@ module.exports = {
         if(req.isAuthenticated()) {
             Post.findById(postId).populate("user").exec()
                 .then(post => {
-                    if(req.user.isAdmin || (post.user === req.user)) {
+                    if(isAuthorized(req.user, post.user._id)) {
                         res.render("post/edit_post.ejs", {post: post});
                     }else{
                         res.locals.redirect = "/post/" + postId;
@@ -117,7 +118,7 @@ module.exports = {
         if(req.isAuthenticated()) {
             Post.findById(postId).exec()
                 .then(post => {
-                    if((req.user.isAdmin) || (post.user === req.user)) {
+                    if(isAuthorized(req.user, post.user._id)) {
                         User.findByIdAndUpdate(post.user, {
                             $pull: {posts: postId}
                         }).exec()

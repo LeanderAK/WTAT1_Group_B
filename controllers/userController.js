@@ -1,6 +1,7 @@
 const User = require("../models/user"),
     passport = require("passport");
 const {redirectView} = require("./postController");
+const {isAuthorized} = require("../public/js/authFunctions");
 
 module.exports = {
     index: (req, res, next) => {
@@ -76,7 +77,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             User.findById(userId).exec()
                 .then(user => {
-                    if ((req.user.isAdmin) || (user._id.equals(req.user._id))) {
+                    if (isAuthorized(req.user, userId)) {
                         res.render("user/edit_user.ejs", {user: user});
                     } else {
                         res.locals.redirect = "/user/" + userId;
@@ -139,7 +140,7 @@ module.exports = {
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
         if (req.isAuthenticated()) {
-            if ((req.user.isAdmin) || (req.user._id.equals(userId))) {
+            if (isAuthorized(req.user, userId)) {
                 User.findByIdAndRemove(userId).exec()
                     .then(() => {
                         res.locals.redirect = "/register";
