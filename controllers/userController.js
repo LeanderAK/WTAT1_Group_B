@@ -7,6 +7,7 @@ module.exports = {
     index: (req, res, next) => {
         User.find().exec()
             .then(users => {
+                res.locals.title = "All Users";
                 res.locals.users = users;
                 next();
             })
@@ -22,6 +23,7 @@ module.exports = {
         let userId = req.params.userId;
         User.findById(userId).exec()
             .then(user => {
+                res.locals.title = user.username;
                 res.locals.user = user;
                 next();
             })
@@ -34,6 +36,7 @@ module.exports = {
         res.render("user/user.ejs")
     },
     register: (req, res) => {
+        res.locals.title = "Register";
         res.render("user/register.ejs")
     },
     create: (req, res, next) => {
@@ -78,6 +81,7 @@ module.exports = {
             User.findById(userId).exec()
                 .then(user => {
                     if (isAuthorized(req.user, userId)) {
+                        res.locals.title = "Edit " + user.username;
                         res.render("user/edit_user.ejs", {user: user});
                     } else {
                         res.locals.redirect = "/user/" + userId;
@@ -166,6 +170,7 @@ module.exports = {
         }
     },
     login: (req, res) => {
+        res.locals.title = "Login";
         res.render("user/login.ejs");
     },
     authenticate: passport.authenticate("local", {

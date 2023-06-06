@@ -16,10 +16,12 @@ module.exports = {
             })
     },
     home: (req, res) => {
+        res.locals.title = "Home";
         res.render("home.ejs");
     },
     search: (req, res) => {
         res.locals.redirect = "/";
+        res.locals.title = "Home";
         let payload = req.body.payload.trim();
         let searchType = req.body.searchType;
         res.locals.searchType = searchType;

@@ -7,6 +7,7 @@ module.exports = {
         let postId = req.params.postId;
         Post.findById(postId).populate("user").exec()
             .then(post => {
+                res.locals.title = post.title;
                 res.locals.post = post;
                 next();
             })
@@ -20,6 +21,7 @@ module.exports = {
     },
     new: (req, res, next) => {
         if(req.isAuthenticated()) {
+            res.locals.title = "New Post";
             res.render("post/create_post.ejs")
         }else{
             res.locals.redirect = "/";
@@ -69,7 +71,9 @@ module.exports = {
             Post.findById(postId).populate("user").exec()
                 .then(post => {
                     if(isAuthorized(req.user, post.user._id)) {
-                        res.render("post/edit_post.ejs", {post: post});
+                        res.locals.post = post;
+                        res.locals.title = "Edit Post";
+                        res.render("post/edit_post.ejs");
                     }else{
                         res.locals.redirect = "/post/" + postId;
                         req.flash("error", `You are not authorised to edit this post`);
