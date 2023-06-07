@@ -57,17 +57,9 @@
                           fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </a>
-            <a class="button" id="profile" href="<%= `/user/${currentUser._id}` %>">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
-                    <g>
-                        <circle cx="7" cy="5.5" r="2.5" fill="none" stroke="#000000" stroke-linecap="round"
-                                stroke-linejoin="round"></circle>
-                        <path d="M2.73,11.9a5,5,0,0,1,8.54,0" fill="none" stroke="#000000" stroke-linecap="round"
-                              stroke-linejoin="round"></path>
-                        <circle cx="7" cy="7" r="6.5" fill="none" stroke="#000000" stroke-linecap="round"
-                                stroke-linejoin="round"></circle>
-                    </g>
-                </svg>
+            <a class="navProfileButton" id="profile" href="<%= `/user/${currentUser._id}` %>">
+                <img id="navProfilePicture"
+                     src="data:image/<%= currentUser.profilePicture.contentType %>;base64,<%= currentUser.profilePicture.data.toString('base64') %>" alt="profile picture of <%= currentUser.username%>"/>
             </a>
         <% } else { %>
             <a id="loginButton" href="/login">Log In</a>

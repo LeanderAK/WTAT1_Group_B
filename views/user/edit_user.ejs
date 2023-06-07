@@ -1,6 +1,31 @@
 <link rel="stylesheet" href="/css/login.css">
 <body>
-<form id="registerForm" action="<%= `/user/${user._id}?_method=PUT` %>" method="post">
+<form id="registerForm" class="loginForm" action="<%= `/user/${user._id}?_method=PUT` %>" method="post"
+      enctype="multipart/form-data">
+    <div class="container" id="preview">
+        <img id="profilePicture"
+             src="data:image/<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="profile picture"/>
+    </div>
+    <div id="pictureButtons">
+        <div id="imageSelect">
+            <label for="image" id="fileInput">
+                <input onchange="showImage()" type="file" id="image" name="image" value="" accept=".jpg, .jpeg, .png"/>
+                Edit
+            </label>
+        </div>
+        <svg onclick="removeImage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+            <g>
+                <g>
+                    <line x1="9.12" y1="4.88" x2="4.88" y2="9.12" fill="none" stroke="#000000" stroke-linecap="round"
+                          stroke-linejoin="round"></line>
+                    <line x1="4.88" y1="4.88" x2="9.12" y2="9.12" fill="none" stroke="#000000" stroke-linecap="round"
+                          stroke-linejoin="round"></line>
+                </g>
+                <circle cx="7" cy="7" r="6.5" fill="none" stroke="#000000" stroke-linecap="round"
+                        stroke-linejoin="round"></circle>
+            </g>
+        </svg>
+    </div>
     <div class="container">
         <label for="username"><b>Username</b>
             <input type="text" placeholder="Enter Username" name="username" value="<%= user.username %>" required>
@@ -20,3 +45,21 @@
     </div>
 </form>
 </body>
+<script>
+    let fileInput = document.getElementById("image");
+    let profilePicture = document.getElementById("profilePicture");
+
+    function removeImage() {
+        profilePicture.src = "/images/ProfilePictureDefault.jpeg";
+        fileInput.files[0] = "";
+    }
+
+    function showImage() {
+        let picture = fileInput.files[0];
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            profilePicture.src = e.target.result;
+        }
+        reader.readAsDataURL(picture);
+    }
+</script>

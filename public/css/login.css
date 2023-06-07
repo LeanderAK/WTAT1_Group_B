@@ -5,6 +5,53 @@
     margin: auto;
 }
 
+#preview {
+    display: flex;
+    justify-content: center;
+}
+
+#profilePicture {
+    border: 1px solid black;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+#pictureButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#pictureButtons svg {
+    background-color: white;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+}
+
+#pictureButtons svg:hover {
+    background-color: #e0e0e0;
+}
+
+#fileInput {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 10px 5px 10px;
+}
+
+#fileInput:hover {
+    background-color: #e0e0e0;
+}
+
+input[type=file] {
+    display: none;
+}
+
 /* Full-width inputs */
 input[type=text], input[type=password] {
     width: 100%;

@@ -15,9 +15,20 @@
     align-items: center;
 }
 
-#username {
+#userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
     color: black;
+}
+
+#userInfo img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid gray;
 }
 
 #followButton {

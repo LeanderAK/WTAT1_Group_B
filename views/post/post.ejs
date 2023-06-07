@@ -2,7 +2,10 @@
 <div class="grid">
     <div id="postInfo">
         <div class="postButtons">
-            <a href="<%= `/user/${post.user._id}` %>" id="username"><%= post.user.username %></a>
+            <a href="<%= `/user/${post.user._id}` %>" id="userInfo">
+                <img src="data:image/<%= post.user.profilePicture.contentType %>;base64,<%= post.user.profilePicture.data.toString('base64') %>" alt="profile picture of <%= post.user.username%>">
+                <div><%= post.user.username %></div>
+            </a>
             <button id="followButton">Folgen</button>
         </div>
         <h1 id="postTitle"><%= post.title %></h1>
