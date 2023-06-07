@@ -40,6 +40,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 router.use((req, res, next) => {
+    res.locals.title = "Creape";
     res.locals.searchType = "post";
     res.locals.tags = ['Kinder', 'Dekoration', 'Textilien', 'Weihnachten', 'Ostern', 'Halloween', 'Herbst', 'Frühling', 'Winter', 'Sommer', 'Lifehack', 'Garten', 'Origami', 'Schmuck', 'Karten', 'Upcycling'];
     res.locals.flashMessages = req.flash();
