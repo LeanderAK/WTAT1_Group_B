@@ -2,6 +2,8 @@ const User = require("../models/user"),
     passport = require("passport");
 const {redirectView} = require("./postController");
 const {isAuthorized} = require("../public/js/authFunctions");
+const fs = require('fs');
+const path = require("path");
 
 module.exports = {
     index: (req, res, next) => {
@@ -58,6 +60,10 @@ module.exports = {
                         username: req.body.username,
                         email: req.body.email,
                         password: req.body.password,
+                        profilePicture: {
+                            data: fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg')),
+                            contentType: 'image/png'
+                        },
                         isAdmin: req.body.isAdmin,
                     };
                     let newUser = new User(userParams);
@@ -118,9 +124,26 @@ module.exports = {
     },
     update: (req, res, next) => {
         let userId = req.params.userId;
+        let profilePicture;
+        if(req.file === undefined){
+            profilePicture = path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg');
+        } else {
+            try {
+                profilePicture = path.join(__dirname, '../public/uploads/' + req.file.filename);
+            } catch (error) {
+                res.locals.redirect = `/user/${userId}/edit`;
+                req.flash("error", `Problem with Profile Picture Occured`);
+                console.log(`Error reading profile picture of user by ID: ${userId}\n${error.message}`);
+                next();
+            }
+        }
         let userParams = {
             username: req.body.username,
             email: req.body.email,
+            profilePicture: {
+                data: fs.readFileSync(profilePicture),
+                contentType: 'image/png'
+            }
         };
         User.findByIdAndUpdate(userId, {
             $set: userParams
@@ -136,7 +159,7 @@ module.exports = {
                 res.locals.redirect = `/user/${userId}/edit`;
                 req.flash("error", `Failed to update user`);
                 console.log(`Error updating user by ID: ${userId}\n${error.message}`);
-                redirectView(req, res, next);
+                next();
             });
     },
     delete: (req, res, next) => {

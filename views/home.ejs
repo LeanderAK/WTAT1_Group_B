@@ -11,7 +11,10 @@
                         <img class="cardImage" src=<%= post.img %> alt="card-image"/>
                         <div id="cardContent">
                             <div id="cardButtons">
-                                <a href="<%= `/user/${post.user._id}` %>" id="username"><%= post.user.username %></a>
+                                <a href="<%= `/user/${post.user._id}` %>" id="usernamePostCard">
+                                    <img src="data:image/<%= post.user.profilePicture.contentType %>;base64,<%= post.user.profilePicture.data.toString('base64') %>" alt="profile picture of <%= post.user.username%>">
+                                    <div><%= post.user.username %></div>
+                                </a>
                                 <button id="followButton">Folgen</button>
                             </div>
                             <h2 id="cardTitle"><%= post.title %></h2>
@@ -39,9 +42,17 @@
             <% users.forEach(user => { %>
                 <a href="<%= `/user/${user._id}` %>" class="userCard">
                     <div class="userCardContent">
+                        <img src="data:image/<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="profile picture of <%= user.username%>">
                         <div id="usernameUserCard"><%= user.username %></div>
-                        <div>Posts: <%= user.posts.length%></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="25" width="25"><g><polyline points="6 4 9 7 6 10" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></polyline><circle cx="7" cy="7" r="6.5" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></circle></g></svg>
+                        <div>Posts: <%= user.posts.length %></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="25" width="25">
+                            <g>
+                                <polyline points="6 4 9 7 6 10" fill="none" stroke="#000000" stroke-linecap="round"
+                                          stroke-linejoin="round"></polyline>
+                                <circle cx="7" cy="7" r="6.5" fill="none" stroke="#000000" stroke-linecap="round"
+                                        stroke-linejoin="round"></circle>
+                            </g>
+                        </svg>
                     </div>
                 </a>
             <% }) %>

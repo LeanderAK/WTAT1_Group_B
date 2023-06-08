@@ -1,3 +1,8 @@
+#topContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
 #userContainer {
     background-color: white;
     padding: 12px;
@@ -7,9 +12,52 @@
     margin: auto auto 30px;
 }
 
+#profileContainer {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#profilePicture {
+    border: 1px solid black;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+#numbersInfo {
+    display: flex;
+    gap: 20px;
+}
+
+#numbersInfo .box {
+    vertical-align: center;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+#numbersInfo .box:hover {
+    background-color: #e0e0e0;
+}
+
+.number {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.label {
+    font-size: 14px;
+}
+
 .userButtons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     align-items: center;
 }
 

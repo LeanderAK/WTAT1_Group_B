@@ -1,5 +1,7 @@
 const mongoose = require("mongoose"),
     Post = require("./models/post");
+const fs = require("fs");
+const path = require("path");
     User = require("./models/user");
 mongoose.connect(
     "mongodb://127.0.0.1:27017/creape_db",
@@ -7,6 +9,18 @@ mongoose.connect(
 );
 
 mongoose.connection;
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, './public/uploads/'));
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+
+const upload = multer({ storage: storage });
 
 const posts = [
     {
@@ -380,50 +394,92 @@ const users = [
         username: "user_1234",
         email: "user_1234@example.com",
         password: " P@ssw0rd123",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/ProfilePictureDefault.jpeg')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "john_doe",
         email: "john.doe@example.com",
         password: "Secret123!",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/John.jpg')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "emma_watson",
         email: "emma_watson@example.com",
         password: "H3rmioneGr@nger",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/EmmaWatson.jpg')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "coolcat",
         email: "coolcat@gmail.com",
         password: "MyPassw0rd!",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/coolcat.webp')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "soccerstar24",
         email: "soccerstar24@hotmail.com",
         password: "Goal123#",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/SoccerStar.png')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "bookworm89",
         email: "bookworm89@yahoo.com",
         password: "ReadingR0cks!",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/BookWorm.jpg')),
+            contentType: 'image/png'
+        }
     },
     {
         username: "fitnessguru",
         email: "fitnessguru@example.com",
         password: "Fit4Life$",
+        followers: [],
+        following: [],
         favorites: [],
-        posts: []
+        posts: [],
+        profilePicture: {
+            data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/Fitnessguru.jpg')),
+            contentType: 'image/png'
+        }
     }
 ];
 
@@ -451,8 +507,10 @@ function createData(){
             email: user.email,
             password: user.password,
             favorites: user.favorites,
-            posts: user.posts
+            posts: user.posts,
+            profilePicture: user.profilePicture
         });
+        upload.single('default');
         userArray.push(User.register(newUser, user.password));
     });
 

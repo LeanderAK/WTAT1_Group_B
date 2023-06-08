@@ -116,15 +116,33 @@
 
 .userCardContent {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto 1fr auto auto;
     gap: 20px;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 8px;
 }
 
-#usernameUserCard {
-    font-weight: bold;
+.userCardContent img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid gray;
+}
+
+#usernamePostCard {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#usernamePostCard img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid gray;
 }
 
 @media screen and (max-width: 1200px) {

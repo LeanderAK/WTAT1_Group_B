@@ -30,6 +30,19 @@ router.use(expressSession({
 }));
 router.use(connectFlash());
 
+const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, './public/uploads/'));
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+
+const upload = multer({ storage: storage });
+
 const passport = require("passport");
 router.use(passport.initialize());
 router.use(passport.session());
@@ -63,12 +76,12 @@ router.get("/login", userController.login);
 router.post("/login", userController.authenticate);
 router.get("/logout", userController.logout, userController.redirectView);
 router.get("/register", userController.register);
-router.post("/user/create", userController.create, userController.authenticate);
+router.post("/user/create", upload.single('default'), userController.create, userController.authenticate);
 
 //User Routes
 router.get("/user/:userId", userController.show, userController.showView);
 router.get("/user/:userId/edit", userController.editView, userController.redirectView);
-router.put("/user/:userId", userController.authenticateUpdate, userController.update, userController.authenticate);
+router.put("/user/:userId", upload.single('image'), userController.authenticateUpdate, userController.update, userController.authenticate);
 router.delete('/user/:userId', userController.delete, userController.redirectView);
 
 //Post Routes
