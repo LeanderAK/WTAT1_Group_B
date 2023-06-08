@@ -126,10 +126,10 @@ module.exports = {
         let userId = req.params.userId;
         let profilePicture;
         if(req.file === undefined){
-            profilePicture = path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg');
+            profilePicture = fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg'));
         } else {
             try {
-                profilePicture = path.join(__dirname, '../public/uploads/' + req.file.filename);
+                profilePicture = req.file.buffer;
             } catch (error) {
                 res.locals.redirect = `/user/${userId}/edit`;
                 req.flash("error", `Problem with Profile Picture Occured`);
@@ -141,7 +141,7 @@ module.exports = {
             username: req.body.username,
             email: req.body.email,
             profilePicture: {
-                data: fs.readFileSync(profilePicture),
+                data: profilePicture,
                 contentType: 'image/png'
             }
         };

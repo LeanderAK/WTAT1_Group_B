@@ -30,17 +30,8 @@ router.use(expressSession({
 }));
 router.use(connectFlash());
 
-const path = require('path');
 const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, './public/uploads/'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const passport = require("passport");
