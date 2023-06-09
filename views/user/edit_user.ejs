@@ -43,13 +43,16 @@
 <script>
     let fileInput = document.getElementById("image");
     let profilePicture = document.getElementById("profilePicture");
+    let profilePictureHasChanged = false;
 
     function removeImage() {
+        profilePictureHasChanged = true;
         profilePicture.src = "/images/ProfilePictureDefault.jpeg";
         fileInput.files[0] = "";
     }
 
     function showImage() {
+        profilePictureHasChanged = true;
         let picture = fileInput.files[0];
         let reader = new FileReader();
         reader.onload = (e) => {
@@ -57,4 +60,10 @@
         }
         reader.readAsDataURL(picture);
     }
+
+    const editUserForm = document.getElementById("registerForm");
+    editUserForm.addEventListener('formdata', (e) => {
+        const formData = e.formData;
+        formData.append('profilePictureHasChanged', JSON.stringify({value: profilePictureHasChanged}));
+    })
 </script>

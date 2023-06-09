@@ -115,10 +115,13 @@ module.exports = {
                     console.log(`Error updating user by ID: ${userId}\n User with this username already exists.`);
                     redirectView(req, res, next);
                 } else {
+                    //username was not changed
+                    res.locals.usernameHasChanged = false;
                     next();
                 }
             })
             .catch(() => {
+                    res.locals.usernameHasChanged = true;
                     next();
                 }
             )
@@ -126,33 +129,46 @@ module.exports = {
     update: (req, res, next) => {
         let userId = req.params.userId;
         let profilePicture;
-        if (req.file === undefined) {
-            profilePicture = fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg'));
+        let userParams;
+        const profilePictureHasChanged = JSON.parse(req.body.profilePictureHasChanged).value;
+        if (!profilePictureHasChanged) {
+            userParams = {
+                username: req.body.username,
+                email: req.body.email,
+            };
         } else {
-            try {
-                profilePicture = req.file.buffer;
-            } catch (error) {
-                res.locals.redirect = `/user/${userId}/edit`;
-                req.flash("error", `Problem with Profile Picture Occured`);
-                console.log(`Error reading profile picture of user by ID: ${userId}\n${error.message}`);
-                next();
+            if (req.file === undefined) {
+                profilePicture = fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg'));
+            } else {
+                try {
+                    profilePicture = req.file.buffer;
+                } catch (error) {
+                    res.locals.redirect = `/user/${userId}/edit`;
+                    req.flash("error", `Problem with Profile Picture Occured`);
+                    console.log(`Error reading profile picture of user by ID: ${userId}\n${error.message}`);
+                    next();
+                }
             }
+            userParams = {
+                username: req.body.username,
+                email: req.body.email,
+                profilePicture: {
+                    data: profilePicture,
+                    contentType: 'image/png'
+                }
+            };
         }
-        let userParams = {
-            username: req.body.username,
-            email: req.body.email,
-            profilePicture: {
-                data: profilePicture,
-                contentType: 'image/png'
-            }
-        };
         User.findByIdAndUpdate(userId, {
             $set: userParams
         }, {runValidators: true}).exec()
             .then(user => {
+                if(res.locals.usernameHasChanged) {
+                    res.locals.redirect = `/login`;
+                } else {
+                    res.locals.redirect = `/user/${userId}`;
+                }
                 res.locals.user = user;
-                res.locals.redirect = `/login`;
-                req.flash("success", `${user.username}'s account updated`);
+                req.flash("success", `${req.body.username}'s account updated`);
                 console.log(`Updated User: ${userId}`);
                 next();
             })
