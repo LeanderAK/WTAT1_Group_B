@@ -72,7 +72,7 @@ router.post("/user/create", upload.single('default'), userController.create, use
 //User Routes
 router.get("/user/:userId", userController.show, userController.showView);
 router.get("/user/:userId/edit", userController.editView, userController.redirectView);
-router.put("/user/:userId", upload.single('image'), userController.authenticateUpdate, userController.update, userController.authenticate);
+router.put("/user/:userId", userController.authenticateBeforeUpdate, userController.authenticateUpdate, upload.single('image'), userController.update, userController.authenticate);
 router.delete('/user/:userId', userController.delete, userController.redirectView);
 
 //Post Routes

@@ -23,7 +23,7 @@ module.exports = {
     },
     show: (req, res, next) => {
         let userId = req.params.userId;
-        User.findById(userId).exec()
+        User.findById(userId).populate("posts").exec()
             .then(user => {
                 res.locals.title = user.username;
                 res.locals.user = user;
@@ -119,13 +119,18 @@ module.exports = {
                 }
             })
             .catch(() => {
-                next();
-            })
+                    next();
+                }
+            )
     },
+    authenticateBeforeUpdate: passport.authenticate("local", {
+        failureRedirect: `/user/${userId}/edit`,
+        failureFlash: "Password incorrect"
+    }, authenticateUpdate),
     update: (req, res, next) => {
         let userId = req.params.userId;
         let profilePicture;
-        if(req.file === undefined){
+        if (req.file === undefined) {
             profilePicture = fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg'));
         } else {
             try {
