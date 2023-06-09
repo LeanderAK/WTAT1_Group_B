@@ -1,9 +1,11 @@
 const User = require("../models/user"),
     passport = require("passport");
-const {redirectView} = require("./postController");
-const {isAuthorized} = require("../public/js/authFunctions");
+const { redirectView } = require("./postController");
+const { isAuthorized } = require("../public/js/authFunctions");
 const fs = require('fs');
 const path = require("path");
+const Post = require("../models/post");
+const { error } = require("console");
 
 module.exports = {
     index: (req, res, next) => {
@@ -49,7 +51,7 @@ module.exports = {
             redirectView(req, res, next);
         } else {
             let name = req.body.username;
-            User.findOne({username: name}).exec()
+            User.findOne({ username: name }).exec()
                 .then(user => {
                     req.flash("error", `Username \"${user.username}\" already exists`);
                     res.locals.redirect = "/register";
@@ -88,7 +90,7 @@ module.exports = {
                 .then(user => {
                     if (isAuthorized(req.user, userId)) {
                         res.locals.title = "Edit " + user.username;
-                        res.render("user/edit_user.ejs", {user: user});
+                        res.render("user/edit_user.ejs", { user: user });
                     } else {
                         res.locals.redirect = "/user/" + userId;
                         req.flash("error", `You are not authorised to edit this user`);
@@ -107,7 +109,7 @@ module.exports = {
     },
     checkUsername: (req, res, next) => {
         let userId = req.params.userId;
-        User.findOne({username: req.body.username}).exec()
+        User.findOne({ username: req.body.username }).exec()
             .then(user => {
                 if (!user._id.equals(userId)) {
                     res.locals.redirect = `/user/${userId}/edit`;
@@ -121,9 +123,9 @@ module.exports = {
                 }
             })
             .catch(() => {
-                    res.locals.usernameHasChanged = true;
-                    next();
-                }
+                res.locals.usernameHasChanged = true;
+                next();
+            }
             )
     },
     update: (req, res, next) => {
@@ -160,9 +162,9 @@ module.exports = {
         }
         User.findByIdAndUpdate(userId, {
             $set: userParams
-        }, {runValidators: true}).exec()
+        }, { runValidators: true }).exec()
             .then(user => {
-                if(res.locals.usernameHasChanged) {
+                if (res.locals.usernameHasChanged) {
                     res.locals.redirect = `/login`;
                 } else {
                     res.locals.redirect = `/user/${userId}`;
@@ -183,31 +185,53 @@ module.exports = {
         //delete all posts created by the user
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
-        if (req.isAuthenticated()) {
-            if (isAuthorized(req.user, userId)) {
-                User.findByIdAndRemove(userId).exec()
-                    .then(() => {
-                        res.locals.redirect = "/register";
-                        req.flash("success", `User deleted successfully`);
-                        console.log(`Deleted User: ${userId}`);
-                        next();
+        User.findById(userId).exec()
+            .then(user => {
+                Promise.all([
+                    user.posts.forEach(postId => {
+                        Post.findByIdAndRemove(postId).exec()
+                            .then(() => {
+                                console.log(`Posts ${postId} was deleted`);
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
                     })
-                    .catch(error => {
-                        res.locals.redirect = `/user/${userId}`;
-                        req.flash("error", `Failed to delete user`);
-                        console.log(`Error deleting user by ID: ${userId}\n${error.message}`);
+                ]).then(() => {
+                    if (req.isAuthenticated()) {
+                        if (isAuthorized(req.user, userId)) {
+                            User.findByIdAndRemove(userId).exec()
+                                .then(() => {
+                                    res.locals.redirect = "/register";
+                                    req.flash("success", `User deleted successfully`);
+                                    console.log(`Deleted User: ${userId}`);
+                                    next();
+                                })
+                                .catch(error => {
+                                    res.locals.redirect = `/user/${userId}`;
+                                    req.flash("error", `Failed to delete user`);
+                                    console.log(`Error deleting user by ID: ${userId}\n${error.message}`);
+                                    next();
+                                });
+                        } else {
+                            res.locals.redirect = "/user/" + userId;
+                            req.flash("error", `You are not authorised to delete this user`);
+                            next();
+                        }
+                    } else {
+                        res.locals.redirect = "/user/" + userId;
+                        req.flash("error", `You are not logged in`);
                         next();
-                    });
-            } else {
+                    }
+                })
+            })
+            .catch(error => {
+                console.log(error);
                 res.locals.redirect = "/user/" + userId;
-                req.flash("error", `You are not authorised to delete this user`);
+                req.flash("error", "Failed to delete posts");
                 next();
-            }
-        } else {
-            res.locals.redirect = "/user/" + userId;
-            req.flash("error", `You are not logged in`);
-            next();
-        }
+            });
+
     },
     login: (req, res) => {
         res.locals.title = "Login";
