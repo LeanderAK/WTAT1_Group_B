@@ -18,6 +18,9 @@ Start Mongodb on Mac:
 ```
 sudo mongod --dbpath /System/Volumes/Data/data/db
 ```
+```
+mongod --path /Users/leander/Desktop/Agile-Web/db
+```
 
 Run dummyData file by entering 
 ```
