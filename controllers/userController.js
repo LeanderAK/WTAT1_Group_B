@@ -105,7 +105,7 @@ module.exports = {
             next();
         }
     },
-    authenticateUpdate: (req, res, next) => {
+    checkUsername: (req, res, next) => {
         let userId = req.params.userId;
         User.findOne({username: req.body.username}).exec()
             .then(user => {
@@ -123,10 +123,6 @@ module.exports = {
                 }
             )
     },
-    authenticateBeforeUpdate: passport.authenticate("local", {
-        failureRedirect: `/user/${userId}/edit`,
-        failureFlash: "Password incorrect"
-    }, authenticateUpdate),
     update: (req, res, next) => {
         let userId = req.params.userId;
         let profilePicture;
@@ -155,7 +151,7 @@ module.exports = {
         }, {runValidators: true}).exec()
             .then(user => {
                 res.locals.user = user;
-                res.locals.redirect = `/user/${userId}`;
+                res.locals.redirect = `/login`;
                 req.flash("success", `${user.username}'s account updated`);
                 console.log(`Updated User: ${userId}`);
                 next();
