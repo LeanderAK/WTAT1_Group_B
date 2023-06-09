@@ -23,7 +23,7 @@ module.exports = {
     },
     show: (req, res, next) => {
         let userId = req.params.userId;
-        User.findById(userId).exec()
+        User.findById(userId).populate("posts").exec()
             .then(user => {
                 res.locals.title = user.username;
                 res.locals.user = user;
@@ -105,7 +105,7 @@ module.exports = {
             next();
         }
     },
-    authenticateUpdate: (req, res, next) => {
+    checkUsername: (req, res, next) => {
         let userId = req.params.userId;
         User.findOne({username: req.body.username}).exec()
             .then(user => {
@@ -119,13 +119,14 @@ module.exports = {
                 }
             })
             .catch(() => {
-                next();
-            })
+                    next();
+                }
+            )
     },
     update: (req, res, next) => {
         let userId = req.params.userId;
         let profilePicture;
-        if(req.file === undefined){
+        if (req.file === undefined) {
             profilePicture = fs.readFileSync(path.join(__dirname, '../public/images/ProfilePictureDefault.jpeg'));
         } else {
             try {
@@ -150,7 +151,7 @@ module.exports = {
         }, {runValidators: true}).exec()
             .then(user => {
                 res.locals.user = user;
-                res.locals.redirect = `/user/${userId}`;
+                res.locals.redirect = `/login`;
                 req.flash("success", `${user.username}'s account updated`);
                 console.log(`Updated User: ${userId}`);
                 next();
