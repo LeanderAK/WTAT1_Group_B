@@ -1,6 +1,7 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 const {isAuthorized} = require("../public/js/authFunctions");
+const {pageNotFoundError} = require("./errorController");
 
 module.exports = {
     show: (req, res, next) => {
@@ -13,7 +14,8 @@ module.exports = {
             })
             .catch(error => {
                 console.log(`Error fetching post by ID: ${postId}\n${error.message}`);
-                next(error);
+                res.locals.error = "post";
+                pageNotFoundError(req, res);
             });
     },
     showView: (req, res) => {

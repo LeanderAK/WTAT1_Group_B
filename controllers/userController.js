@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require("path");
 const Post = require("../models/post");
 const { error } = require("console");
+const {pageNotFoundError} = require("./errorController");
 
 module.exports = {
     index: (req, res, next) => {
@@ -33,7 +34,8 @@ module.exports = {
             })
             .catch(error => {
                 console.log(`Error fetching user by ID: ${userId}\n${error.message}`);
-                next(error);
+                res.locals.error = "user";
+                pageNotFoundError(req, res);
             });
     },
     showView: (req, res) => {
@@ -182,7 +184,6 @@ module.exports = {
             });
     },
     delete: (req, res, next) => {
-        //delete all posts created by the user
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
         User.findById(userId).exec()
