@@ -174,4 +174,9 @@
         margin-right: 10px;
         margin-left: 10px;
     }
+
+    #profile {
+        width: 42px;
+        height: 42px;
+    }
 }

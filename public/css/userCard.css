@@ -1,0 +1,33 @@
+.userCard {
+    display: block;
+    text-decoration: none;
+    color: black;
+    max-width: 600px;
+    margin: auto auto 10px;
+    overflow: hidden;
+    transition: transform .1s;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.15);
+}
+
+.userCard:hover {
+    transform: scale(1.01);
+}
+
+.userCardContent {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+.userCardContent img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid gray;
+}
