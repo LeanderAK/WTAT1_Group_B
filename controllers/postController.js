@@ -17,7 +17,11 @@ module.exports = {
             });
     },
     showView: (req, res) => {
-        res.render("post/post.ejs");
+        if (req.query.format === "json"){
+            res.json(res.locals.post)
+        } else {
+            res.render("post/post.ejs");
+        }
     },
     new: (req, res, next) => {
         if(req.isAuthenticated()) {
@@ -116,6 +120,46 @@ module.exports = {
                 console.log(`Error updating post by ID: ${postId}\n${error.message}`);
                 next();
             });
+    },
+    favorite: (req, res, next) => {
+        let postId = req.params.postId;
+        let userId = req.user._id;
+
+        Post.findById(postId).exec().then(post => {
+            if (post.favorites.includes(userId)) {
+                Post.findByIdAndUpdate(postId, {
+                    $pull: { favorites: userId }
+                }, { runValidators: true }).exec()
+                    .then(() => User.findByIdAndUpdate(postId, {
+                        $pull: { favorites: postId }
+                    }, { runValidators: true }).exec())
+                    .then(() => Post.findById(postId).exec())
+                    .then(updatedPost => {
+                        //console.log("updated result: " + updatedPost.favorites);
+                        res.json(updatedPost);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.status(500).json({ error: "An error occurred" });
+                    });
+            } else {
+                Post.findByIdAndUpdate(postId, {
+                    $push: { favorites: userId }
+                }, { runValidators: true }).exec()
+                    .then(() => User.findByIdAndUpdate(postId, {
+                        $push: { favorites: postId }
+                    }, { runValidators: true }).exec())
+                    .then(() => Post.findById(postId).exec())
+                    .then(updatedPost => {
+                        //console.log("updated result: " + updatedPost.favorites);
+                        res.json(updatedPost);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.status(500).json({ error: "An error occurred" });
+                    });
+            }
+        })
     },
     delete: (req, res, next) => {
         let postId = req.params.postId;

@@ -79,6 +79,7 @@ router.delete('/user/:userId', userController.delete, userController.redirectVie
 router.get("/post/create", postController.new, postController.redirectView);
 router.post("/post/create", postController.create, postController.redirectView);
 router.get("/post/:postId", postController.show, postController.showView);
+router.post("/post/:postId/favorite", postController.favorite);
 router.get("/post/:postId/edit", postController.editView, postController.redirectView);
 router.put("/post/:postId", postController.update, postController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
