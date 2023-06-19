@@ -16,8 +16,12 @@ module.exports = {
             })
     },
     home: (req, res) => {
-        res.locals.title = "Home";
-        res.render("home.ejs");
+        if (req.query.format === "json"){
+            res.json(res.locals.posts)
+        } else {
+            res.locals.title = "Home";
+            res.render("home.ejs");
+        }
     },
     search: (req, res) => {
         res.locals.redirect = "/";
