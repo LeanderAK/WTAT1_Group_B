@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="/css/home.css">
+<body>
+<input type="hidden" id="currentUserId" value="<%= currentUser ? currentUser._id : 'not_logged_in' %>" />
+<div class="content">
+    <div class="masonryGrid">
+        <% posts.forEach(post => { %>
+            <%- include('partials/homePostCard.ejs', {post: post}) %>
+        <% }) %>
+    </div>
+</div>
+<script>
+    function favorite(postId) {
+        var userId = document.getElementById('currentUserId').value;
+        
+        $.post(`post/${postId}/favorite?format=json`, (post) => {
+            $(`#post-favorite-count-${postId}`).html(post.favorites.length);
+
+            if(post.favorites.includes(userId)){
+                $(`#post-favorite-button-${postId}`).attr('fill', 'yellow')
+            } else {
+                $(`#post-favorite-button-${postId}`).attr('fill', 'none')
+            }
+        })
+    }
+</script>
+</body>

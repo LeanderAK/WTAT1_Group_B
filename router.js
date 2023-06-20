@@ -1,6 +1,7 @@
 const homeController = require("./controllers/homeController")
 const userController = require("./controllers/userController")
 const postController = require("./controllers/postController")
+const favoritesController = require("./controllers/favoritesController")
 const express = require('express');
 const router = express.Router();
 
@@ -61,6 +62,9 @@ The ':' indicates the use of a parameter within the path.
 //General Routes
 router.get("/", homeController.getAllPosts, homeController.home);
 router.post("/", homeController.search);
+
+//Favorites
+router.get("/favorites", favoritesController.show)
 
 //Auth Routes
 router.get("/login", userController.login);
