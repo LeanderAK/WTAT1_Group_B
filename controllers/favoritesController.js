@@ -1,22 +1,30 @@
 const Post = require("../models/post");
-const User = require("../models/user");
-const {isAuthorized} = require("../public/js/authFunctions");
 
 module.exports = {
     show: (req, res, next) => {
-        let postId = req.params.postId;
-        Post.find({ favorites: { $in: [req.user._id] } }).populate("user").exec()
-            .then(posts => {
-                if (req.query.format === "json"){
-                    res.json(posts)
-                } else {
-                    res.locals.posts = posts;
-                    res.render("favorites.ejs");
-                }
-            })
-            .catch(error => {
-                console.log(`Error fetching posts`);
-                next(error);
-            });
+        if (req.isAuthenticated()) {
+            Post.find({favorites: {$in: [req.user._id]}}).populate("user").exec()
+                .then(posts => {
+                    if (req.query.format === "json") {
+                        res.json(posts)
+                    } else {
+                        res.locals.posts = posts;
+                        res.render("favorites.ejs");
+                    }
+                })
+                .catch(error => {
+                    console.log(`Error fetching favorite posts`);
+                    next(error);
+                });
+        } else {
+            req.flash("error", "You are not logged in");
+            res.locals.redirect = "/login";
+            next();
+        }
     },
+    redirectView: (req, res, next) => {
+        let redirectPath = res.locals.redirect;
+        if (redirectPath) res.redirect(redirectPath);
+        else next();
+    }
 };

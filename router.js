@@ -64,7 +64,7 @@ router.get("/", homeController.getAllPosts, homeController.home);
 router.post("/", homeController.search);
 
 //Favorites
-router.get("/favorites", favoritesController.show)
+router.get("/favorites", favoritesController.show, favoritesController.redirectView);
 
 //Auth Routes
 router.get("/login", userController.login);

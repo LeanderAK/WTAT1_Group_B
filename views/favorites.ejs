@@ -16,7 +16,7 @@
             $(`#post-favorite-count-${postId}`).html(post.favorites.length);
 
             if(post.favorites.includes(userId)){
-                $(`#post-favorite-button-${postId}`).attr('fill', 'yellow')
+                $(`#post-favorite-button-${postId}`).attr('fill', '#EAE34B')
             } else {
                 $(`#post-favorite-button-${postId}`).attr('fill', 'none')
             }
