@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/post.css">
+<script type="text/javascript" src="/js/favoriteFunction.js"></script>
 <input type="hidden" id="currentUserId" value="<%= currentUser ? currentUser._id : 'not_logged_in' %>"/>
 <div class="grid">
     <div id="postInfo">
@@ -77,19 +78,4 @@
             </div>
     <% })} %>
 </div>
-<script>
-    function favorite(postId) {
-        var userId = document.getElementById('currentUserId').value;
-
-        $.post(postId + "/favorite?format=json", (post) => {
-            $(`#post-favorite-count-${postId}`).html(post.favoritedByUsers.length);
-
-            if (post.favoritedByUsers.includes(userId)) {
-                $(`#post-favorite-button-${postId}`).attr('fill', '#EAE34B')
-            } else {
-                $(`#post-favorite-button-${postId}`).attr('fill', 'none')
-            }
-        });
-    }
-</script>
 

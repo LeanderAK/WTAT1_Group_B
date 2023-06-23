@@ -29,7 +29,7 @@ const mongoose = require("mongoose"),
             index: true
         },
         steps: [stepSchema],
-        favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+        favoritedByUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         user: {required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     });
 module.exports = mongoose.model("Post", postSchema);

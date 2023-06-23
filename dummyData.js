@@ -64,7 +64,7 @@ const posts = [
                 number: 9,
                 description: "Jetzt hast du eine niedliche Schnecke mit einem gemütlichen Plüschhaus gebastelt! Du kannst weitere Schnecken in verschiedenen Farben und Größen herstellen und eine ganze Schneckenfamilie erschaffen. Viel Spaß beim Basteln!"
             },
-        ]
+        ],
     },
     {
         title: "Papierkürbis",
@@ -106,6 +106,7 @@ const posts = [
                 description: "Jetzt hast du einen einfachen Papierkürbis gebastelt! Du kannst mehrere Kürbisse in verschiedenen Größen und Farben herstellen und sie als Dekoration aufstellen oder als Geschenk verpacken. Viel Spaß beim Basteln!"
             },
         ]
+
     },
     {
         title: "Simple Holzgartenbank",
@@ -396,7 +397,7 @@ const users = [
         password: " P@ssw0rd123",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/ProfilePictureDefault.jpeg')),
@@ -409,7 +410,7 @@ const users = [
         password: "Secret123!",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/John.jpg')),
@@ -422,7 +423,7 @@ const users = [
         password: "H3rmioneGr@nger",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/EmmaWatson.jpg')),
@@ -435,7 +436,7 @@ const users = [
         password: "MyPassw0rd!",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/coolcat.webp')),
@@ -448,7 +449,7 @@ const users = [
         password: "Goal123#",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/SoccerStar.png')),
@@ -461,7 +462,7 @@ const users = [
         password: "ReadingR0cks!",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/BookWorm.jpg')),
@@ -474,7 +475,7 @@ const users = [
         password: "Fit4Life$",
         followers: [],
         following: [],
-        favorites: [],
+        favoritedPosts: [],
         posts: [],
         profilePicture: {
             data: fs.readFileSync(path.join(__dirname, './public/images/dummyProfilePictures/Fitnessguru.jpg')),
