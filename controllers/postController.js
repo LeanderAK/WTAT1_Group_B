@@ -1,7 +1,6 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 const {isAuthorized} = require("../public/js/authFunctions");
-const {pageNotFoundError} = require("./errorController");
 
 module.exports = {
     show: (req, res, next) => {
@@ -14,12 +13,15 @@ module.exports = {
             })
             .catch(error => {
                 console.log(`Error fetching post by ID: ${postId}\n${error.message}`);
-                res.locals.error = "post";
-                pageNotFoundError(req, res);
+                next(error);
             });
     },
     showView: (req, res) => {
-        res.render("post/post.ejs");
+        if (req.query.format === "json"){
+            res.json(res.locals.post)
+        } else {
+            res.render("post/post.ejs");
+        }
     },
     new: (req, res, next) => {
         if(req.isAuthenticated()) {
@@ -118,6 +120,48 @@ module.exports = {
                 console.log(`Error updating post by ID: ${postId}\n${error.message}`);
                 next();
             });
+    },
+    favorite: (req, res, next) => {
+        if (res.locals.loggedIn) {
+            let postId = req.params.postId;
+            let userId = req.user._id;
+
+            Post.findById(postId).exec().then(post => {
+                if (post.favoritedByUsers.includes(userId)) {
+                    Post.findByIdAndUpdate(postId, {
+                        $pull: { favoritedByUsers: userId }
+                    }, { runValidators: true }).exec()
+                        .then(() => User.findByIdAndUpdate(postId, {
+                            $pull: { favoritedPosts: postId }
+                        }, { runValidators: true }).exec())
+                        .then(() => Post.findById(postId).exec())
+                        .then(updatedPost => {
+                            //console.log("updated result: " + updatedPost.favorites);
+                            res.json(updatedPost);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            res.status(500).json({ error: "An error occurred" });
+                        });
+                } else {
+                    Post.findByIdAndUpdate(postId, {
+                        $push: { favorites: userId }
+                    }, { runValidators: true }).exec()
+                        .then(() => User.findByIdAndUpdate(postId, {
+                            $push: { favoritedPosts: postId }
+                        }, { runValidators: true }).exec())
+                        .then(() => favoritedByUsers.findById(postId).exec())
+                        .then(updatedPost => {
+                            //console.log("updated result: " + updatedPost.favorites);
+                            res.json(updatedPost);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            res.status(500).json({ error: "An error occurred" });
+                        });
+                }
+            })
+        }
     },
     delete: (req, res, next) => {
         let postId = req.params.postId;

@@ -1,6 +1,7 @@
 const homeController = require("./controllers/homeController")
 const userController = require("./controllers/userController")
 const postController = require("./controllers/postController")
+const favoritesController = require("./controllers/favoritesController")
 const express = require('express');
 const router = express.Router();
 
@@ -62,6 +63,9 @@ The ':' indicates the use of a parameter within the path.
 router.get("/", homeController.getAllPosts, homeController.home);
 router.post("/", homeController.search);
 
+//Favorites
+router.get("/favorites", favoritesController.show, favoritesController.redirectView);
+
 //Auth Routes
 router.get("/login", userController.login);
 router.post("/login", userController.authenticate);
@@ -79,6 +83,7 @@ router.delete('/user/:userId', userController.delete, userController.redirectVie
 router.get("/post/create", postController.new, postController.redirectView);
 router.post("/post/create", postController.create, postController.redirectView);
 router.get("/post/:postId", postController.show, postController.showView);
+router.post("/post/:postId/favorite", postController.favorite);
 router.get("/post/:postId/edit", postController.editView, postController.redirectView);
 router.put("/post/:postId", postController.update, postController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
