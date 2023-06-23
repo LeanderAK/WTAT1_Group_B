@@ -122,44 +122,46 @@ module.exports = {
             });
     },
     favorite: (req, res, next) => {
-        let postId = req.params.postId;
-        let userId = req.user._id;
+        if (res.locals.loggedIn) {
+            let postId = req.params.postId;
+            let userId = req.user._id;
 
-        Post.findById(postId).exec().then(post => {
-            if (post.favoritedByUsers.includes(userId)) {
-                Post.findByIdAndUpdate(postId, {
-                    $pull: { favoritedByUsers: userId }
-                }, { runValidators: true }).exec()
-                    .then(() => User.findByIdAndUpdate(postId, {
-                        $pull: { favoritedPosts: postId }
-                    }, { runValidators: true }).exec())
-                    .then(() => Post.findById(postId).exec())
-                    .then(updatedPost => {
-                        //console.log("updated result: " + updatedPost.favorites);
-                        res.json(updatedPost);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        res.status(500).json({ error: "An error occurred" });
-                    });
-            } else {
-                Post.findByIdAndUpdate(postId, {
-                    $push: { favoritedByUsers: userId }
-                }, { runValidators: true }).exec()
-                    .then(() => User.findByIdAndUpdate(postId, {
-                        $push: { favoritedPosts: postId }
-                    }, { runValidators: true }).exec())
-                    .then(() => Post.findById(postId).exec())
-                    .then(updatedPost => {
-                        //console.log("updated result: " + updatedPost.favorites);
-                        res.json(updatedPost);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        res.status(500).json({ error: "An error occurred" });
-                    });
-            }
-        })
+            Post.findById(postId).exec().then(post => {
+                if (post.favoritedByUsers.includes(userId)) {
+                    Post.findByIdAndUpdate(postId, {
+                        $pull: { favoritedByUsers: userId }
+                    }, { runValidators: true }).exec()
+                        .then(() => User.findByIdAndUpdate(postId, {
+                            $pull: { favoritedPosts: postId }
+                        }, { runValidators: true }).exec())
+                        .then(() => Post.findById(postId).exec())
+                        .then(updatedPost => {
+                            //console.log("updated result: " + updatedPost.favorites);
+                            res.json(updatedPost);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            res.status(500).json({ error: "An error occurred" });
+                        });
+                } else {
+                    Post.findByIdAndUpdate(postId, {
+                        $push: { favorites: userId }
+                    }, { runValidators: true }).exec()
+                        .then(() => User.findByIdAndUpdate(postId, {
+                            $push: { favoritedPosts: postId }
+                        }, { runValidators: true }).exec())
+                        .then(() => favoritedByUsers.findById(postId).exec())
+                        .then(updatedPost => {
+                            //console.log("updated result: " + updatedPost.favorites);
+                            res.json(updatedPost);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            res.status(500).json({ error: "An error occurred" });
+                        });
+                }
+            })
+        }
     },
     delete: (req, res, next) => {
         let postId = req.params.postId;
