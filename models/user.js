@@ -17,7 +17,7 @@ const mongoose = require("mongoose"),
 
         followers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         following: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-        favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
+        favoritedPosts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
         posts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
         isAdmin: {
             type: Boolean,

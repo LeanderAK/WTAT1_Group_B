@@ -13,9 +13,9 @@
         var userId = document.getElementById('currentUserId').value;
         
         $.post(`post/${postId}/favorite?format=json`, (post) => {
-            $(`#post-favorite-count-${postId}`).html(post.favorites.length);
+            $(`#post-favorite-count-${postId}`).html(post.favoritedByUsers.length);
 
-            if(post.favorites.includes(userId)){
+            if(post.favoritedByUsers.includes(userId)){
                 $(`#post-favorite-button-${postId}`).attr('fill', 'yellow')
             } else {
                 $(`#post-favorite-button-${postId}`).attr('fill', 'none')

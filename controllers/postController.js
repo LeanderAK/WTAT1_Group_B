@@ -126,12 +126,12 @@ module.exports = {
         let userId = req.user._id;
 
         Post.findById(postId).exec().then(post => {
-            if (post.favorites.includes(userId)) {
+            if (post.favoritedByUsers.includes(userId)) {
                 Post.findByIdAndUpdate(postId, {
-                    $pull: { favorites: userId }
+                    $pull: { favoritedByUsers: userId }
                 }, { runValidators: true }).exec()
                     .then(() => User.findByIdAndUpdate(postId, {
-                        $pull: { favorites: postId }
+                        $pull: { favoritedPosts: postId }
                     }, { runValidators: true }).exec())
                     .then(() => Post.findById(postId).exec())
                     .then(updatedPost => {
@@ -144,10 +144,10 @@ module.exports = {
                     });
             } else {
                 Post.findByIdAndUpdate(postId, {
-                    $push: { favorites: userId }
+                    $push: { favoritedByUsers: userId }
                 }, { runValidators: true }).exec()
                     .then(() => User.findByIdAndUpdate(postId, {
-                        $push: { favorites: postId }
+                        $push: { favoritedPosts: postId }
                     }, { runValidators: true }).exec())
                     .then(() => Post.findById(postId).exec())
                     .then(updatedPost => {

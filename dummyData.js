@@ -506,7 +506,7 @@ function createData(){
             username: user.username,
             email: user.email,
             password: user.password,
-            favorites: user.favorites,
+            favoritedPosts: user.favoritedPosts,
             posts: user.posts,
             profilePicture: user.profilePicture
         });
