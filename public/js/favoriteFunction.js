@@ -1,7 +1,7 @@
 function favorite(postId) {
     var userId = document.getElementById('currentUserId').value;
-
-    $.post(postId + "/favorite?format=json", (post) => {
+    var url = window.location.origin
+    $.post(`${url}/post/${postId}/favorite?format=json`, (post) => {
         $(`#post-favorite-count-${postId}`).html(post.favoritedByUsers.length);
 
         if (post.favoritedByUsers.includes(userId)) {
