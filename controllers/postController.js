@@ -145,12 +145,12 @@ module.exports = {
                         });
                 } else {
                     Post.findByIdAndUpdate(postId, {
-                        $push: { favorites: userId }
+                        $push: { favoritedByUsers: userId }
                     }, { runValidators: true }).exec()
                         .then(() => User.findByIdAndUpdate(postId, {
                             $push: { favoritedPosts: postId }
                         }, { runValidators: true }).exec())
-                        .then(() => favoritedByUsers.findById(postId).exec())
+                        .then(() => Post.findById(postId).exec())
                         .then(updatedPost => {
                             //console.log("updated result: " + updatedPost.favorites);
                             res.json(updatedPost);

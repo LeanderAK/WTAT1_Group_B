@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/css/user.css">
+<script type="text/javascript" src="/js/favoriteFunction.js"></script>
+<input type="hidden" id="currentUserId" value="<%= currentUser ? currentUser._id : 'not_logged_in' %>" />
 <div id="userContainer">
     <div id="topContainer">
         <h1><%= user.username %></h1>
