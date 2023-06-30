@@ -78,6 +78,7 @@ router.get("/user/:userId", userController.show, userController.showView);
 router.get("/user/:userId/edit", userController.editView, userController.redirectView);
 router.put("/user/:userId", upload.single('image'), userController.checkUsername, userController.update, userController.redirectView);
 router.delete('/user/:userId', userController.delete, userController.redirectView);
+router.post('/user/:userId/follow', userController.follow, userController.updateFollowing);
 
 //Post Routes
 router.get("/post/create", postController.new, postController.redirectView);

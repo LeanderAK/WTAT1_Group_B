@@ -68,6 +68,21 @@
     height: 25px;
 }
 
+.userFollowButton {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0;
+    padding: 5px 10px 5px 10px;
+    border-radius: 20px;
+    border: solid black 1px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.userFollowButton:hover {
+    box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.15);
+}
+
 #logoutButton {
     text-decoration: none;
     color: black;

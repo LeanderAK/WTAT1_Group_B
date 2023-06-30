@@ -183,6 +183,74 @@ module.exports = {
                 next();
             });
     },
+    follow: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            let userId = req.params.userId;
+            let currentUserId = req.user._id;
+
+            //User that is followed
+            User.findById(userId).exec().then(user => {
+                if(user.followers.includes(currentUserId)) {
+                    User.findByIdAndUpdate(userId, {
+                        $pull: { followers: currentUserId }
+                    }).exec()
+                        .then(() => {
+                            User.findById(userId).exec()
+                                .then(updatedUser => {
+                                    res.json(updatedUser);
+                                    next();
+                                })
+                        })
+                        .catch(error => {
+                            console.log("Error while pulling user from followers: "  + error)
+                    })
+                } else {
+                    User.findByIdAndUpdate(userId, {
+                        $push: { followers: currentUserId }
+                    }).exec()
+                        .then(() => {
+                            User.findById(userId).exec()
+                                .then(updatedUser => {
+                                    res.json(updatedUser);
+                                    next();
+                                })
+                        })
+                        .catch(error => {
+                            console.log("Error while pushing user to followers: "  + error)
+                    })
+                }
+            }).catch(error => {
+                console.log("Error finding user to follow: " + error)
+            })
+        }
+    },
+    updateFollowing: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            let userId = req.params.userId;
+            let currentUserId = req.user._id;
+
+            //User that is following
+            User.findById(currentUserId).exec().then(user => {
+                if(user.following.includes(userId)) {
+                    User.findByIdAndUpdate(currentUserId, {
+                        $pull: { following: userId }
+                    }).exec()
+                        .catch(error => {
+                            console.log("Error while pulling user from following: " + error)
+                        })
+                } else {
+                    User.findByIdAndUpdate(currentUserId, {
+                        $push: { following: userId }
+                    }).exec()
+                        .catch(error => {
+                            console.log("Error while pushing user to following: " + error)
+                        })
+                }
+            }).catch(error => {
+                console.log("Error finding following user: " + error)
+            })
+        }
+    },
     delete: (req, res, next) => {
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;

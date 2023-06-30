@@ -8,7 +8,22 @@
                      alt="profile picture of <%= post.user.username %>">
                 <div><%= post.user.username %></div>
             </a>
-            <button id="followButton">Folgen</button>
+            <% if (loggedIn) { %>
+                <button onclick="follow('<%= post.user._id %>')"
+                        class="followButton follow-<%= post.user._id %>"
+                        <% if (post.user.followers.includes(currentUser._id)) { %>
+                            style="background-color: #EAE34B; border: solid #EAE34B 1px"
+                        <% } else { %>
+                            style="background-color: white; border: solid black 1px"
+                        <% } %>
+                >
+                    <% if (post.user.followers.includes(currentUser._id)) { %>
+                        <%= "Unfollow" %>
+                    <% } else { %>
+                        <%= "Follow" %>
+                    <% } %>
+                </button>
+            <% } %>
         </div>
         <h2 id="cardTitle"><%= post.title %></h2>
         <div id="cardDescription"><%= post.description %></div>
