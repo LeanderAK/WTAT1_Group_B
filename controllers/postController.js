@@ -169,9 +169,12 @@ module.exports = {
             Post.findById(postId).exec()
                 .then(post => {
                     if(isAuthorized(req.user, post.user._id)) {
-                        User.findByIdAndUpdate(post.user, {
-                            $pull: {posts: postId}
-                        }).exec()
+                        Promise.all([
+                            User.updateMany({$expr: {$in: [postId, "$favoritedPosts"]}}, {$pull: {favoritedPosts: postId}}).exec()
+                                .catch(error => { console.log("Error while removing post from favoritedPosts: " + error)}),
+                            User.findByIdAndUpdate(post.user, { $pull: {posts: postId}}).exec()
+                                .catch(error => { console.log("Error removing post from users posts array: " + error)})
+                        ])
                             .then(() => {
                                 Post.findByIdAndRemove(postId).exec()
                                     .then(() => {
