@@ -68,7 +68,7 @@
     border: 1px solid gray;
 }
 
-#followButton {
+.followButton {
     margin: 0;
     padding: 5px 10px 5px 10px;
     border-radius: 20px;
@@ -77,8 +77,8 @@
     cursor: pointer;
 }
 
-#followButton:hover {
-    background-color: #e0e0e0;
+.followButton:hover {
+    box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.15);
 }
 
 #cardIcon {

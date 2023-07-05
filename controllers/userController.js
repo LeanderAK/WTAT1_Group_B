@@ -5,7 +5,6 @@ const { isAuthorized } = require("../public/js/authFunctions");
 const fs = require('fs');
 const path = require("path");
 const Post = require("../models/post");
-const { error } = require("console");
 const {pageNotFoundError} = require("./errorController");
 
 module.exports = {
@@ -183,6 +182,74 @@ module.exports = {
                 next();
             });
     },
+    follow: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            let userId = req.params.userId;
+            let currentUserId = req.user._id;
+
+            //User that is followed
+            User.findById(userId).exec().then(user => {
+                if(user.followers.includes(currentUserId)) {
+                    User.findByIdAndUpdate(userId, {
+                        $pull: { followers: currentUserId }
+                    }).exec()
+                        .then(() => {
+                            User.findById(userId).exec()
+                                .then(updatedUser => {
+                                    res.json(updatedUser);
+                                    next();
+                                })
+                        })
+                        .catch(error => {
+                            console.log("Error while pulling user from followers: "  + error)
+                    })
+                } else {
+                    User.findByIdAndUpdate(userId, {
+                        $push: { followers: currentUserId }
+                    }).exec()
+                        .then(() => {
+                            User.findById(userId).exec()
+                                .then(updatedUser => {
+                                    res.json(updatedUser);
+                                    next();
+                                })
+                        })
+                        .catch(error => {
+                            console.log("Error while pushing user to followers: "  + error)
+                    })
+                }
+            }).catch(error => {
+                console.log("Error finding user to follow: " + error)
+            })
+        }
+    },
+    updateFollowing: (req, res, next) => {
+        if (req.isAuthenticated()) {
+            let userId = req.params.userId;
+            let currentUserId = req.user._id;
+
+            //User that is following
+            User.findById(currentUserId).exec().then(user => {
+                if(user.following.includes(userId)) {
+                    User.findByIdAndUpdate(currentUserId, {
+                        $pull: { following: userId }
+                    }).exec()
+                        .catch(error => {
+                            console.log("Error while pulling user from following: " + error)
+                        })
+                } else {
+                    User.findByIdAndUpdate(currentUserId, {
+                        $push: { following: userId }
+                    }).exec()
+                        .catch(error => {
+                            console.log("Error while pushing user to following: " + error)
+                        })
+                }
+            }).catch(error => {
+                console.log("Error finding following user: " + error)
+            })
+        }
+    },
     delete: (req, res, next) => {
         //future: delete posts from favorites of all users having favoritised it
         let userId = req.params.userId;
@@ -190,13 +257,28 @@ module.exports = {
             .then(user => {
                 Promise.all([
                     user.posts.forEach(postId => {
-                        Post.findByIdAndRemove(postId).exec()
-                            .then(() => {
-                                console.log(`Posts ${postId} was deleted`);
-                            })
+                        User.updateMany({$expr: {$in: [postId, "$favoritedPosts"]}}, {$pull: {favoritedPosts: postId}}).exec()
                             .catch(error => {
-                                console.log(error);
-                            });
+                                console.log("Error while removing post from favoritedPosts: " + error);
+                            })
+                        Post.deleteOne({_id: postId}).exec()
+                            .catch(error => {
+                                console.log("Error deleting post: " + error);
+                            })
+                    }),
+                    user.followers.forEach(followerId => {
+                        User.findByIdAndUpdate(followerId, {
+                            $pull: {following: userId}
+                        }).exec().catch(error => {
+                            console.log(error);
+                        })
+                    }),
+                    user.following.forEach(followingId => {
+                        User.findByIdAndUpdate(followingId, {
+                            $pull: {followers: userId}
+                        }).exec().catch(error => {
+                            console.log(error);
+                        })
                     })
                 ]).then(() => {
                     if (req.isAuthenticated()) {
@@ -223,13 +305,18 @@ module.exports = {
                         res.locals.redirect = "/user/" + userId;
                         req.flash("error", `You are not logged in`);
                         next();
-                    }
-                })
+                    }})
+                    .catch(error => {
+                        console.log(`Error deleting references to user by ID: ${userId}\n${error.message}`);
+                        res.locals.redirect = "/user/" + userId;
+                        req.flash("error", "Failed to delete references to User");
+                        next();
+                    })
             })
             .catch(error => {
-                console.log(error);
+                console.log(`Failed to delete User: ${error}`);
                 res.locals.redirect = "/user/" + userId;
-                req.flash("error", "Failed to delete posts");
+                req.flash("error", "Failed to delete User");
                 next();
             });
 
