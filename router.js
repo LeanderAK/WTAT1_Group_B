@@ -58,6 +58,8 @@ router.use((req, res, next) => {
 All accessible routes. The function call from the specified controller renders the view.
 The ':' indicates the use of a parameter within the path.
 */
+//API Routes
+router.post("/api/login", userController.apiAuthenticate)
 
 //General Routes
 router.get("/", homeController.getAllPosts, homeController.home);
@@ -84,10 +86,12 @@ router.post('/user/:userId/follow', userController.follow, userController.update
 router.get("/post/create", postController.new, postController.redirectView);
 router.post("/post/create", postController.create, postController.redirectView);
 router.get("/post/:postId", postController.show, postController.showView);
-router.post("/post/:postId/favorite", postController.favorite);
 router.get("/post/:postId/edit", postController.editView, postController.redirectView);
 router.put("/post/:postId", postController.update, postController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
+
+//api
+router.post("/post/:postId/favorite", userController.verifyJWT, postController.favorite);
 
 //Admin Routes
 router.get("/admin/users", userController.index, userController.indexView);

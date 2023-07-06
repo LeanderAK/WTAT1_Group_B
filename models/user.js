@@ -1,4 +1,5 @@
-const mongoose = require("mongoose"),
+const mongoose = require("mongoose");
+const randToken = require("rand-token");
     passportLocalMongoose = require("passport-local-mongoose"),
     userSchema = mongoose.Schema({
         username: {
@@ -22,7 +23,7 @@ const mongoose = require("mongoose"),
         isAdmin: {
             type: Boolean,
             default: false,
-        },
+        }
     });
 
 userSchema.plugin(passportLocalMongoose, {
