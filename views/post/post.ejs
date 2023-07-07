@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="/css/post.css">
 <script type="text/javascript" src="/js/actionFunctions.js"></script>
 <input type="hidden" id="currentUserId" value="<%= currentUser ? currentUser._id : 'not_logged_in' %>"/>
+<input type="hidden" id="apiToken" value="<%= currentUser ? currentUser.apiToken : 'not_logged_in' %>" />
 <div class="grid">
     <div id="postInfo">
         <div class="postButtons">

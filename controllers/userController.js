@@ -1,11 +1,14 @@
 const User = require("../models/user"),
     passport = require("passport");
+const jsonWebToken = require("jsonwebtoken");
+const httpStatus = require("http-status-codes");
 const { redirectView } = require("./postController");
 const { isAuthorized } = require("../public/js/authFunctions");
 const fs = require('fs');
 const path = require("path");
 const Post = require("../models/post");
 const {pageNotFoundError} = require("./errorController");
+const user = require("../models/user");
 
 module.exports = {
     index: (req, res, next) => {
@@ -320,6 +323,23 @@ module.exports = {
                 next();
             });
 
+    },
+    verifyToken: (req, res, next) => {
+        //console.log(req)
+        let token = req.query.apiToken;
+        //console.log(token)
+        if (token) {
+            User.findOne({ apiToken: token })
+            .then(user => {
+                if (user) next();
+                else next(new Error("Invalid API token."));
+            })
+            .catch(error => {
+            next(new Error(error.message));
+        });
+        } else {
+            next(new Error("Invalid API token."));
+        }
     },
     login: (req, res) => {
         res.locals.title = "Login";

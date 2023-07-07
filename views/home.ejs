@@ -2,6 +2,7 @@
 <script type="text/javascript" src="/js/actionFunctions.js"></script>
 <body>
 <input type="hidden" id="currentUserId" value="<%= currentUser ? currentUser._id : 'not_logged_in' %>" />
+<input type="hidden" id="apiToken" value="<%= currentUser ? currentUser.apiToken : 'not_logged_in' %>" />
 <div class="content">
     <% if((searchType === "post")) { %>
         <% if(!posts || (posts.length === 0)) { %>

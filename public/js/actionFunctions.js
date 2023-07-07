@@ -1,7 +1,8 @@
 function favorite(postId) {
     var userId = document.getElementById('currentUserId').value;
+    var apiToken = document.getElementById('apiToken').value;
     var url = window.location.origin
-    $.post(`${url}/post/${postId}/favorite?format=json`, (post) => {
+    $.post(`${url}/post/${postId}/favorite?format=json&apiToken=${apiToken}`, (post) => {
         $(`#post-favorite-count-${postId}`).html(post.favoritedByUsers.length);
 
         if (post.favoritedByUsers.includes(userId)) {
