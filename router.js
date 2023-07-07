@@ -59,7 +59,6 @@ All accessible routes. The function call from the specified controller renders t
 The ':' indicates the use of a parameter within the path.
 */
 //API Routes
-router.post("/api/login", userController.apiAuthenticate)
 
 //General Routes
 router.get("/", homeController.getAllPosts, homeController.home);
@@ -91,7 +90,7 @@ router.put("/post/:postId", postController.update, postController.redirectView);
 router.delete("/post/:postId", postController.delete, postController.redirectView);
 
 //api
-router.post("/post/:postId/favorite", userController.verifyJWT, postController.favorite);
+router.post("/post/:postId/favorite", userController.verifyToken, postController.favorite);
 
 //Admin Routes
 router.get("/admin/users", userController.index, userController.indexView);

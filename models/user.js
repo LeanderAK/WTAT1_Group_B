@@ -15,7 +15,9 @@ const randToken = require("rand-token");
             data: Buffer,
             contentType: String,
         },
-
+        apiToken: {
+            type: String,
+        }, 
         followers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         following: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         favoritedPosts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
@@ -28,6 +30,11 @@ const randToken = require("rand-token");
 
 userSchema.plugin(passportLocalMongoose, {
     usernameField: "username",
+});
+userSchema.pre("save", function(next) {
+    let user = this;
+    if (!user.apiToken) user.apiToken = randToken.generate(16);
+    next();
 });
 
 module.exports = mongoose.model("User", userSchema);
