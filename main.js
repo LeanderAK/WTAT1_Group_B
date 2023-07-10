@@ -3,7 +3,8 @@ const router = require('./router'),
     port = 3000, express = require("express"),
     app = express(), path = require("path"),
     errorController = require("./controllers/errorController"),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    socketio = require("socket.io");
 
 const mongoose = require("mongoose");
 mongoose.connect(
@@ -29,8 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
-
+/*
 app.listen(port, () => {
     console.log(`The Express.js server has started and is listening on port number: ${port}`);
 });
+*/
+const server = app.listen(port, () => {
+    console.log(`Server running at http://localhost:${ port }`);
+}), io = socketio(server);
+require("./controllers/chatController")(io);
 

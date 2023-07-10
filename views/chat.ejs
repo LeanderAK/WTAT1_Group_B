@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/css/chat.css"></link
+<div class="content">
+    <div class="chatContainer">
+        <h1>Chat</h1>
+        <div id="chat" class="chatBox">
+            <!-- Examples for Styling -->
+            <div class="message">
+                <div class="text">Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet.
+                    Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum
+                    Dolor sit amet.
+                </div>
+            </div>
+            <div class="message userMessage">
+                <div class="text">Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet.
+                    Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum
+                    Dolor sit amet.
+                </div>
+            </div>
+        </div>
+        <form id="chatForm">
+            <input id="chat-input" class="input" type="text">
+            <!-- currentUser.username is undefined here -->
+            <input id="chat-user-name" type="hidden" value="<%= currentUser.username %>">
+            <input id="chat-user-id" type="hidden" value="<%= currentUser._id %>">
+            <button class="sendButton" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <g id="mail-send-email-message--send-email-paper-airplane-deliver">
+                        <path id="Vector 2311" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              d="M6 8 .5 5.5l13-5-5 13L6 8Z"></path>
+                        <path id="Vector 2312" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              d="m6 8 3-3"></path>
+                    </g>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+<!-- Script has to be at the bottom of the body -->
+<!-- because we manipulate the DOM (document.getElementById()) -->
+<script src="/js/chat.js"></script>

@@ -67,6 +67,9 @@ router.post("/", homeController.search);
 //Favorites
 router.get("/favorites", favoritesController.show, favoritesController.redirectView);
 
+//Chat
+router.get("/chat", homeController.chat);
+
 //Auth Routes
 router.get("/login", userController.login);
 router.post("/login", userController.authenticate);
