@@ -74,6 +74,10 @@
             </div>
         </div>
     </div>
+    <form action="/checkChats" method="post">
+        <input id="requestedUserId" name="requestedUserId" type="hidden" value="<%= user._id %>">
+        <button type="submit">Message</button>
+    </form>
     <div><%= user.email %></div>
     <div>Is Admin: <%= user.isAdmin %></div>
     <div>apiToken: <%= user.apiToken %></div>

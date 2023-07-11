@@ -1,27 +1,17 @@
-<link rel="stylesheet" href="/css/chat.css"></link
+<link rel="stylesheet" href="/css/chat.css">
 <div class="content">
     <div class="chatContainer">
-        <h1>Chat</h1>
-        <div id="chat" class="chatBox">
-            <!-- Examples for Styling -->
-            <div class="message">
-                <div class="text">Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet.
-                    Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum
-                    Dolor sit amet.
-                </div>
-            </div>
-            <div class="message userMessage">
-                <div class="text">Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet.
-                    Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum Dolor sit amet. Lorem Ipsum
-                    Dolor sit amet.
-                </div>
-            </div>
-        </div>
+        <% let chatUser = chatroom.users.find(user => !currentUser._id.equals(user._id)) %>
+        <a class="chatHeader" href="<%=`/user/${chatUser._id}`%>">
+            <img class="chatProfilePicture" src="data:image/<%= chatUser.profilePicture.contentType %>;base64,<%= chatUser.profilePicture.data.toString('base64') %>" alt="profile picture of messaged User"/>
+            <div><%= chatUser.username %></div>
+        </a>
+        <div id="chat" class="chatBox"></div>
         <form id="chatForm">
-            <input id="chat-input" class="input" type="text">
-            <!-- currentUser.username is undefined here -->
+            <input placeholder="Schreibe eine Nachricht..." id="chat-input" class="input" type="text">
             <input id="chat-user-name" type="hidden" value="<%= currentUser.username %>">
             <input id="chat-user-id" type="hidden" value="<%= currentUser._id %>">
+            <input id="chatroom-id" type="hidden" value="<%= chatroom._id %>">
             <button class="sendButton" type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                     <g id="mail-send-email-message--send-email-paper-airplane-deliver">

@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="/css/chat.css">
+<div class="content">
+    <div class="chatList">
+        <% chatrooms.forEach(chatroom => { %>
+            <% let chatUser = chatroom.users.find(user => !currentUser._id.equals(user._id)) %>
+            <a class="chatLink" href="<%= `/chats/${chatroom._id}` %>">
+                <img class="chatProfilePicture"
+                     src="data:image/<%= chatUser.profilePicture.contentType %>;base64,<%= chatUser.profilePicture.data.toString('base64') %>"
+                     alt="profile picture of messaged User"/>
+                <div><%= chatUser.username %></div>
+                <div class="notification"></div>
+            </a>
+        <% }) %>
+    </div>
+</div>
