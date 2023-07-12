@@ -33,8 +33,8 @@ socket.on("message", (message, chatroomId) => {
             createdAt: new Date().toISOString(),
         }
         displayMessage(messageData);
+        updateScroll();
     }
-    updateScroll();
 });
 
 socket.on("load all messages", (messages, chatroomId) => {

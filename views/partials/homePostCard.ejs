@@ -8,7 +8,7 @@
                      alt="profile picture of <%= post.user.username %>">
                 <div><%= post.user.username %></div>
             </a>
-            <% if (loggedIn) { %>
+            <% if (loggedIn && (!currentUser._id.equals(post.user._id))) { %>
                 <button onclick="follow('<%= post.user._id %>')"
                         class="followButton follow-<%= post.user._id %>"
                         <% if (post.user.followers.includes(currentUser._id)) { %>

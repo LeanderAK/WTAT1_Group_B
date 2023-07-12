@@ -1,15 +1,25 @@
 <link rel="stylesheet" href="/css/chat.css">
 <div class="content">
-    <div class="chatList">
-        <% chatrooms.forEach(chatroom => { %>
-            <% let chatUser = chatroom.users.find(user => !currentUser._id.equals(user._id)) %>
-            <a class="chatLink" href="<%= `/chats/${chatroom._id}` %>">
-                <img class="chatProfilePicture"
-                     src="data:image/<%= chatUser.profilePicture.contentType %>;base64,<%= chatUser.profilePicture.data.toString('base64') %>"
-                     alt="profile picture of messaged User"/>
-                <div><%= chatUser.username %></div>
-                <div class="notification"></div>
-            </a>
-        <% }) %>
+    <div class="chatListContainer">
+        <div class="chatroomHeader">
+            <h1>Messages</h1>
+        </div>
+        <% if (chatrooms.length === 0) { %>
+            <div class="info">There are no chats yet. Start a new chat by visiting a users profile page and click on "Send Message"%></div>
+        <% } %>
+        <div class="chatList">
+            <% chatrooms.forEach(chatroom => { %>
+                <% let chatUser = chatroom.users.find(user => !currentUser._id.equals(user._id)) %>
+                <a class="chatLink" href="<%= `/chats/${chatroom._id}` %>">
+                    <img class="chatProfilePicture"
+                         src="data:image/<%= chatUser.profilePicture.contentType %>;base64,<%= chatUser.profilePicture.data.toString('base64') %>"
+                         alt="profile picture of messaged User"/>
+                    <div><%= chatUser.username %></div>
+                    <div class="notification"></div>
+                </a>
+            <% }) %>
+        </div>
+        <div class="chatroomFooter"></div>
     </div>
 </div>
+<script src="/js/chatrooms.js"></script>
