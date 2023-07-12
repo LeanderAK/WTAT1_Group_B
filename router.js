@@ -1,7 +1,8 @@
-const homeController = require("./controllers/homeController")
-const userController = require("./controllers/userController")
-const postController = require("./controllers/postController")
-const favoritesController = require("./controllers/favoritesController")
+const homeController = require("./controllers/homeController");
+const userController = require("./controllers/userController");
+const postController = require("./controllers/postController");
+const favoritesController = require("./controllers/favoritesController");
+const chatroomController = require("./controllers/chatroomController");
 const express = require('express');
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.use(methodOverride("_method", {
 
 router.get('/test', (req, res, next) => {
     return res.status(200).json({
-        data : "Service is running! "
+        data: "Service is running! "
     });
 })
 
@@ -33,7 +34,7 @@ router.use(connectFlash());
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 const passport = require("passport");
 router.use(passport.initialize());
@@ -66,6 +67,11 @@ router.post("/", homeController.search);
 
 //Favorites
 router.get("/favorites", favoritesController.show, favoritesController.redirectView);
+
+//Chat
+router.post("/checkChats", chatroomController.checkForExistingChatroom, chatroomController.create, chatroomController.redirectView);
+router.get("/chats", chatroomController.getAllChatrooms, chatroomController.showAllChatrooms);
+router.get("/chats/:chatId", chatroomController.getChatroom, chatroomController.showChatroom);
 
 //Auth Routes
 router.get("/login", userController.login);

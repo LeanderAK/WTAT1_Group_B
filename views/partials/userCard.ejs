@@ -2,8 +2,8 @@
 <div class="userCard">
     <div class="userCardContent">
         <img src="data:image/<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="profile picture of <%= user.username%>">
-        <div id="usernameUserCard"><%= user.username %></div>
-        <% if (loggedIn) { %>
+        <div><%= user.username %></div>
+        <% if (loggedIn && (!currentUser._id.equals(post.user._id))) { %>
             <button onclick="follow('<%= user._id %>')"
                     class="followButton follow-<%= user._id %>"
             <% if (user.followers.includes(currentUser._id)) { %>

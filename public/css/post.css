@@ -45,6 +45,7 @@
 }
 
 .favoriteDiv {
+    margin-top: 10px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;

@@ -74,6 +74,12 @@
             </div>
         </div>
     </div>
+    <% if(!currentUser._id.equals(user._id)) { %>
+    <form class="messageButtonForm" action="/checkChats" method="post">
+        <input id="requestedUserId" name="requestedUserId" type="hidden" value="<%= user._id %>">
+        <button class="messageButton" type="submit">Send Message</button>
+    </form>
+    <% } %>
     <div><%= user.email %></div>
     <div>Is Admin: <%= user.isAdmin %></div>
     <div>apiToken: <%= user.apiToken %></div>

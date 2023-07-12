@@ -1,8 +1,8 @@
 const mongoose = require("mongoose"),
     Post = require("./models/post");
 const fs = require("fs");
-const path = require("path");
-    User = require("./models/user");
+const path = require("path"),
+    User = require("./models/user"), Chatroom = require("./models/chatroom");
 mongoose.connect(
     "mongodb://127.0.0.1:27017/creape_db",
     { useNewUrlParser: true }
@@ -488,6 +488,7 @@ function removeAllAndReplace() {
     Promise.all([
             User.deleteMany().exec(),
             Post.deleteMany().exec(),
+            Chatroom.deleteMany().exec(),
         ])
         .then(() => {
             console.log("Deleted Everything");
