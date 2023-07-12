@@ -64,6 +64,7 @@ module.exports = {
         }
     },
     showAllChatrooms: (req, res, next) => {
+        res.locals.title = "Messages";
         res.render("chatrooms.ejs");
     },
     getChatroom: (req, res, next) => {
@@ -75,6 +76,8 @@ module.exports = {
                     let userIds = chatroom.users.map(user => {return user._id.toString()});
                     if(userIds.includes(userId.toString())){
                         res.locals.chatroom = chatroom;
+                        let chatPartner = chatroom.users.find(user => user._id.toString() !== (userId.toString()));
+                        res.locals.chatroomUsername = chatPartner.username;
                         next();
                     } else {
                         req.flash("error", `You are not part of this chat`);
@@ -92,6 +95,7 @@ module.exports = {
         }
     },
     showChatroom: (req, res, next) => {
+        res.locals.title = "Chat with " + res.locals.chatroomUsername;
         res.render("chat.ejs");
     },
     redirectView: (req, res, next) => {

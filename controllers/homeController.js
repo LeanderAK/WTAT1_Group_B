@@ -19,7 +19,7 @@ module.exports = {
         if (req.query.format === "json"){
             res.json(res.locals.posts)
         } else {
-            res.locals.title = "Home";
+            res.locals.title = "Creape";
             res.render("home.ejs");
         }
     },
