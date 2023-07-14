@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <% if(!currentUser._id.equals(user._id)) { %>
+    <% if(loggedIn && (!currentUser._id.equals(user._id))) { %>
     <form class="messageButtonForm" action="/checkChats" method="post">
         <input id="requestedUserId" name="requestedUserId" type="hidden" value="<%= user._id %>">
         <button class="messageButton" type="submit">Send Message</button>
